@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<!-- Metatags e outros cabeçalhos -->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Me Gusta</title>
+	<style>
+		/* Estilos CSS */
+
+		/* Paleta de Cores */
+		:root {
+			--cor-amarela: #FFE330;
+			--cor-laranja-claro: #FFB60D;
+			--cor-laranja: #FA7D00;
+			--cor-vermelha: #D94F21;
+			--cor-vermelha-escura: #C71616;
+		}
+
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f4f4f4;
+		}
+
+		header {
+			background-color: var(--cor-vermelha);
+			/* Usando a cor vermelha escura no cabeçalho */
+			color: #fff;
+			padding: 20px;
+			text-align: center;
+		}
+
+		h1 {
+			margin: 0;
+		}
+
+		/* Estilos adicionados para o formulário de envio de receitas */
+		.formulario {
+			background-color: #fff;
+			margin: 20px;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0 2px 5px rgba(214, 149, 7, 0.1);
+		}
+
+		.formulario h2 {
+			font-size: 24px;
+			margin-bottom: 10px;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+		}
+		
+		#nome{
+			width: 30%;
+		}
+
+		#ingredientes, #modoPreparo{
+			width: 95%;
+		}
+
+		input[type="text"],
+		textarea {
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 10px;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+		}
+
+		button {
+			background-color: var(--cor-vermelha);
+			/* Usando a cor vermelha escura no botão */
+			color: #fff;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 3px;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background-color: #555;
+		}
+
+		/* Adicionando estilos para o filtro de receitas */
+		.filtro {
+			background-color: #fff;
+			margin: 20px;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		}
+
+		body {
+			background-color: #CCCCCC;
+		}
+
+		@media screen and (max-width: 768px) {
+            .formulario {
+                margin: 10px;
+                padding: 10px;
+            }
+
+            .formulario h2 {
+                font-size: 20px;
+            }
+
+            label,
+            input[type="text"],
+            textarea {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 8px;
+            }
+
+            button {
+                padding: 8px 16px;
+            }
+        }
+	</style>
+
+</head>
+
+<body>
+	<header>
+		<h1>Me Gusta</h1>
+		<p>Compartilhe suas receitas deliciosas!</p>
+	</header>
+
+	<!-- Formulário de envio de receitas para RF-05 e RF-06 -->
+	<div class="formulario">
+		<h2>Compartilhe sua Receita</h2>
+		<form>
+			<label for="nome">Nome da Receita:</label>
+			<input type="text" id="nome" name="nome" required>
+
+			<label for="ingredientes">Ingredientes:</label>
+			<textarea id="ingredientes" name="ingredientes" rows="4" required></textarea>
+
+			<label for="modoPreparo">Modo de Preparo:</label>
+			<textarea id="modoPreparo" name="modoPreparo" rows="4" required></textarea>
+
+			<button type="submit">Enviar Receita</button>
+		</form>
+	</div>
+
+
+	<footer>
+		<!-- Rodapé -->
+	</footer>
+</body>
+
+</html>
