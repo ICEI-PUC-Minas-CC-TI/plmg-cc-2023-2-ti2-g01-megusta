@@ -9,6 +9,11 @@
     font-family: 'AveriaRegular';
 }
 
+#roda {
+    bottom: 0 !important;
+    position: absolute;
+}
+
 body{
     background-color: #dadada;
     overflow-x: hidden;
