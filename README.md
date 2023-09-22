@@ -1,13 +1,13 @@
-# [Nome do projeto]
+# Me Gusta
 
-[Escreva um ou dois  parágrafo resumindo o objetivo do seu projeto.]
+O objetivo do Me Gusta é ajudar seus usuários a se alimentarem de uma maneira mais diversificada e saudável. Oferecendo-lhes a oportunidade de sair do usual descobrindo novas receitas com seus alimentos preferidos, evitando assim uma dieta baseada em fast food e em comidas que prejudicam a sáude.
 
 ## Alunos integrantes da equipe
 
-* [Nome completo do aluno 1]
-* [Nome completo do aluno 2]
-* [Nome completo do aluno 3]
-* [Nome completo do aluno 4]
+* Lívia Alves Ferreira
+* João Pedro de Melo Murta
+* Thiago Augusto Demeto Leão
+* Lucas Felipe Carvalho Caldeira
 
 ## Professores responsáveis
 
