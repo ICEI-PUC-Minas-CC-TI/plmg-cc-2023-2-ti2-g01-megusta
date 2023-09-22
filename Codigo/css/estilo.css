@@ -11,7 +11,7 @@
 
 #roda {
     bottom: 0 !important;
-    position: absolute;
+    position: relative;
 }
 
 body{
