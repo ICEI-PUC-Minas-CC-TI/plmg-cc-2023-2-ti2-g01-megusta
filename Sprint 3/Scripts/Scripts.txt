@@ -1,0 +1,129 @@
+Me gusta: Alimentação saudável do seu jeito (Grupo 1)
+Scripts do Banco de dados
+
+/* Criação do BD
+* Script que representa a criação do banco de dados Me Gusta;
+*/
+
+CREATE DATABASE Me Gusta;
+
+USE MeGusta;
+
+/* Criação de Tabelas Primárias
+* Scripts para a criação de tabelas que representam entidades do BD e seus respectivos atributos.
+*/
+
+CREATE TABLE IF NOT EXISTS "MG".usuario
+(
+    id uuid NOT NULL,
+    nome character varying(50) COLLATE NOT NULL,
+    sobrenome character varying(60) NOT NULL,
+    usuario character varying(20) NOT NULL,
+    email character varying(100) NOT NULL,
+    idade integer,
+    genero "char",
+    senha character varying(100) NOT NULL,
+    permissao "char" NOT NULL,
+    CONSTRAINT usuario_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS "MG".ingrediente
+(
+    nome character varying(100) NOT NULL,
+    id uuid NOT NULL,
+    imagem bytea NOT NULL,
+    nutritionalinfo jsonb NOT NULL,
+    categoria character varying(50) NOT NULL,
+    CONSTRAINT "Ingredient_pkey" PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS "MG".receita
+(
+    id uuid NOT NULL,
+    usuario_id uuid NOT NULL,
+    titulo character varying(100) NOT NULL,
+    descricao character varying(150) NOT NULL,
+    imagem bytea NOT NULL,
+    instrucao character varying(200)[] NOT NULL,
+    "tempoPreparo" integer NOT NULL,
+    porcao character varying(30) NOT NULL,
+    dificuldade character varying(20) NOT NULL,
+    custo double precision NOT NULL,
+    nutritionalinfo jsonb NOT NULL,
+    CONSTRAINT recipe_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_receita_usuario FOREIGN KEY (usuario_id) REFERENCES "MG".usuario (id)
+);
+
+CREATE TABLE IF NOT EXISTS "MG".restricao
+(
+    id uuid NOT NULL,
+    tipo character varying(30) NOT NULL,
+    nome character varying(50) NOT NULL,
+    CONSTRAINT restricao_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS "MG".anotacao
+(
+    id uuid NOT NULL,
+    mensagem character varying(50) NOT NULL,
+    cor character varying(10) NOT NULL,
+    usuario_id uuid NOT NULL,
+    CONSTRAINT anotacao_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_anotacao_usuario FOREIGN KEY (usuario_id) REFERENCES "MG".usuario (id)
+);
+
+/* Criação de Tabelas Secundárias
+* Scripts para a criação de tabelas que representam relacionamentos entre entidades do BD e seus respectivos atributos.
+*/
+
+CREATE TABLE IF NOT EXISTS "MG".ingredientesSelecionados (
+    user_id uuid NOT NULL,
+    ingredient_id uuid NOT NULL,
+    CONSTRAINT ingredientesSelecionados_pkey PRIMARY KEY (user_id, ingredient_id),
+    CONSTRAINT fk_ingredientesSelecionados_usuario FOREIGN KEY (user_id) REFERENCES "MG".usuario (id) ON DELETE CASCADE,
+    CONSTRAINT fk_ingredientesSelecionados_ingrediente FOREIGN KEY (ingredient_id) REFERENCES "MG".ingrediente (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "MG".ingredientesBanidos (
+    user_id uuid NOT NULL,
+    ingredient_id uuid NOT NULL,
+    CONSTRAINT ingredientesBanidos_pkey PRIMARY KEY (user_id, ingredient_id),
+    CONSTRAINT fk_ingredientesBanidos_usuario FOREIGN KEY (user_id) REFERENCES "MG".usuario (id) ON DELETE CASCADE,
+    CONSTRAINT fk_ingredientesBanidos_ingrediente FOREIGN KEY (ingredient_id) REFERENCES "MG".ingrediente (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "MG".ingredientesDestacados (
+    user_id uuid NOT NULL,
+    ingredient_id uuid NOT NULL,
+    CONSTRAINT ingredientesDestacados_pkey PRIMARY KEY (user_id, ingredient_id),
+    CONSTRAINT fk_ingredientesDestacados_usuario FOREIGN KEY (user_id) REFERENCES "MG".usuario (id) ON DELETE CASCADE,
+    CONSTRAINT fk_ingredientesDestacados_ingrediente FOREIGN KEY (ingredient_id) REFERENCES "MG".ingrediente (id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS "MG".receitasSalvas (
+    user_id uuid NOT NULL,
+    recipe_id uuid NOT NULL,
+    CONSTRAINT receitasSalvas_pkey PRIMARY KEY (user_id, recipe_id),
+    CONSTRAINT fk_receitasSalvas_usuario FOREIGN KEY (user_id) REFERENCES "MG".usuario (id) ON DELETE CASCADE,
+    CONSTRAINT fk_receitasSalvas_receita FOREIGN KEY (recipe_id) REFERENCES "MG".receita (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "MG".reviews (
+    user_id uuid NOT NULL,
+    recipe_id uuid NOT NULL,
+    review integer CHECK (review >= 0 AND review <= 10) NOT NULL,
+    CONSTRAINT reviews_pkey PRIMARY KEY (user_id, recipe_id),
+    CONSTRAINT fk_reviews_usuario FOREIGN KEY (user_id) REFERENCES "MG".usuario (id) ON DELETE CASCADE,
+    CONSTRAINT fk_reviews_receita FOREIGN KEY (recipe_id) REFERENCES "MG".receita (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "MG".receitaIngredientes (
+    recipe_id uuid NOT NULL,
+    ingredient_id uuid NOT NULL,
+    quantidade integer NOT NULL,
+    unidadeMedida character varying(20) NOT NULL,
+    CONSTRAINT receitaIngredientes_pkey PRIMARY KEY (ingredient_id, recipe_id),
+    CONSTRAINT fk_receitaIngredientes_ingrediente FOREIGN KEY (ingredient_id) REFERENCES "MG".ingrediente (id),
+    CONSTRAINT fk_receitaIngredientes_receita FOREIGN KEY (recipe_id) REFERENCES "MG".receita (id) ON DELETE CASCADE
+);
