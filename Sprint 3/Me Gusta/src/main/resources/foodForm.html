@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/averia" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/estilo.css" />
+
+    <title>Formulário de Alimentos</title>
+  </head>
+  
+  <body>
+    <header>
+      <nav id="nav">
+        <a class="logo" href="index.html">ME GUSTA</a>
+      </nav>
+    </header>
+    <div id="section" class="container">
+      <div class="card foodForm">
+        <h1 class="entrarCadastrar">Selecione os alimentos de sua preferência</h1>
+
+        <form id="foodPresentation">
+            <div>
+                <select id="orderBy" name="orderBy">
+                    <option value="">Ordenar por</option>
+                    <option value="alfabetica">Ordem Alfabética</option>
+                    <option value="categoria">Categoria</option>
+                </select>
+            </div>
+
+            <div>
+                <input type="text" id="searchBox" name="searchBox" placeholder="Busque um item">
+                <button id="pesquisar"><i class="fas fa-search fa-lg" style="color: #FA7D00;"></i></button>
+            </div>
+        </form>
+
+        <div id="alimentos">
+            <div id="a1">
+                <h2>Banana</h2>
+                <input type="checkbox" class="checkbox">
+            </div>
+            <div id="a2">
+                <h2>Maça</h2>
+                <input type="checkbox" class="checkbox">
+            </div>
+            <div id="a3">
+                <h2>Uva</h2>
+                <input type="checkbox" class="checkbox">
+            </div>
+            <div id="a4">
+                <h2>Mel</h2>
+                <input type="checkbox" class="checkbox">
+            </div>
+            <div id="a5">
+                <h2>Ovos de Galinha</h2>
+                <input type="checkbox" class="checkbox">
+            </div>
+            <div id="a6">
+                <h2>Aveia</h2>
+                <input type="checkbox" class="checkbox">
+            </div>
+            <div id="a7">
+                <h2>Carne Bovina</h2>
+                <input type="checkbox" class="checkbox">
+            </div>
+            <div id="a8">
+                <h2>Carne Suína</h2>
+                <input type="checkbox" class="checkbox">
+            </div>
+            <div id="a9">
+                <h2>Azeite de Oliva</h2>
+                <input type="checkbox" class="checkbox">
+            </div>
+        </div>
+
+        <div class="justify-center">
+            <button>Submeter</button>
+            <button>Terminar mais tarde</button>
+        </div>
+     
+        <div class="justify-center">
+          <hr />
+        </div>
+        <p class="centered">Você pode alterar suas respostas a qualquer momento.&nbsp</p>
+      </div>
+    </div>
+  </body>
+</html> 
