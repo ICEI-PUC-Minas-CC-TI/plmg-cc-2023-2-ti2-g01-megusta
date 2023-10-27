@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/averia" type="text/css">
+    <link rel="stylesheet" href="css/estilo.css" />
+    <title>Sobre você</title>
+  </head>
+  <body>
+    <header>
+      <nav id="nav">
+        <a class="logo" href="index.html">ME GUSTA</a>
+      </nav>
+    </header>
+    <div class="container1">
+      <div class="card1">
+        <h1 class="entrarCadastrar" id="sobreVoce">Sobre você</h1>
+        <p id="marque">Marque as opções adequadas para nos ajudar a personalizar o seu contéudo</p>
+
+	    <ul id="navR">
+          <li>ESTILO DE VIDA</li>
+          <li>CONDIÇÃO DE SAÚDE</li>
+          <li>DEMAIS RETRIÇÕES</li>
+        </ul>
+
+        <div class="justify-center">
+          <button id="carregarCondicaoSaude">Próximo</button>
+        </div>
+        <p class="centered">Clique aqui para&nbsp<a id="cadastro" href="perfil.html">responder depois</a></p>
+      </div>
+      
+    </div>
+    <script>
+		document.addEventListener('DOMContentLoaded', function() {
+			document.onload = carregarEstilodVida;
+			let avancar = document.getElementById("avancar");
+	    	let voltar = document.getElementById("voltar");
+	        
+	        // Função para fazer a solicitação AJAX
+	        function carregarEstiloVida() {
+	            fetch('http://localhost:6789/usuario/preencherPerfil')  
+	                .then(response => response.json())
+	                .then(data => {
+	                    console.log('Data:', data); 
+	                    sobrenome.innerHTML = ""; // Limpa o conteúdo existente
+	                    nome.innerHTML = ""; 
+	                    user.innerHTML = "";
+	                    
+	                    if (data) {
+                            nome.innerHTML += `${data.nome}`;
+                            sobrenome.innerHTML += `${data.sobrenome}`;       
+    						user.innerHTML += `${data.user}`; 
+    						email.innerHTML += `${data.email}`; 
+	                    
+	                    	if(!data.permissao){
+								gerente.style = disabled;
+							}
+	                    } else {
+	                        alert('Erro ao carregar página');
+	                    }
+	                })
+	                .catch(error => console.error('Erro ao obter informações do usuário', error));
+	        }
+			
+	        document.getElementById('gerente').addEventListener('click', function() {
+	          window.location.href = 'gerenciamento.html';
+	        });
+        });
+	</script>
+  </body>
+</html>
