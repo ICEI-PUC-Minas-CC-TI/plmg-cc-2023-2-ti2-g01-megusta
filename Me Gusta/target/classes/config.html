@@ -21,18 +21,9 @@
         <h1 class="entrarCadastrar">Configurações</h1>
 		<div id="msgSuccess"></div>
 		<div id="divTarefas">
-			<div id="alterarUser">
-				<a class="a1" onclick="alterarUser()"><h3>Alterar User</h3></a>
-			</div>
-			<div id="alterarSenha">
-				<a class="a1" onclick="alterarSenha()"><h3>Alterar Senha</h3></a>
-			</div>
 			<div id="editarPerfil">
 				<a class="a1" onclick="editarPerfil()"><h3>Editar perfil</h3></a>
-			</div>
-			<div id="restricoes">
-				<a class="a1" onclick="minhasRestrições()"><h3>Minhas Restrições</h3></a>
-			</div>			
+			</div>	
 			<div id="selecionados">
 				<a class="a1" onclick="ingSelecionados()"><h3>Ingredientes Selecionados</h3></a>
 			</div>
@@ -59,75 +50,66 @@
     </div>
     
     <!-- MODAIS -->
-        <div class="modal" id="myModal">
-			<div class="model-content4">
-				<h1 class="entrarCadastrar">Alterar User</h1>
-				<div id="msgError2"></div>
-				<div id="msgSuccess2"></div>
-				
-				<form id="alterarUser">
-					
-				 <div class="label-float">
-		            <input type="text" id="novoUser" name="novoUser" placeholder=" " required />
-		            <label id="labelNovoUser" for="novoUser">Novo nome de usuário</label>
-		          </div>
-		  
-		          <div class="label-float">
-		            <input type="password" id="senha" name="senha" placeholder=" " required />
-		            <label id="labelSenha" for="senha">Confirmar senha</label>
-		          </div>
-		         
-		         <div class="justify-center">
-			         <button id="prosseguir">Prosseguir</button>
-			         <button id="fecharModal">Cancelar</button>
-		          </div>
-				</form>
-		     </div>
-        </div>
+    	<div class="modal" id="myModal5">
+		<div id="contentModal4" class="model-content8">
+		<div class="food">
+        <h1 class="entrarCadastrar">Alimentos de sua preferência</h1>
         
-    <div class="modal" id="myModal1">
-			<div class="model-content4">
-				<h1 class="entrarCadastrar">Alterar Senha</h1>
-				<div id="msgError3"></div>
-				<div id="msgSuccess3"></div>
-				
-				<form id="alterarSenha">
-					
-				 <div class="label-float">
-		            <input type="password" id="senhaAtual" name="senhaAtual" placeholder=" " required />
-		            <label id="labelSenhaAtual" for="senhaAtual">Confirmar senha atual</label>
-		            
-		          </div>
-		  
-		          <div class="label-float">
-		            <input type="password" id="senha" name="senha" placeholder=" " required />
-		            <label id="labelSenha" for="senha">Nova senha</label>
-		            
-		          </div>
-		  
-		          <div class="label-float">
-		            <input type="password" id="confirmSenha" name="confirmSenha" placeholder=" " required />
-		            <label id="labelConfirmSenha" for="confirmSenha">Confirmar nova senha</label>
-		          </div>
-		         
-		         <div class="justify-center">
-			         <button id="prosseguir">Prosseguir</button>
-			         <button id="fecharModal1">Cancelar</button>
-		          </div>
-				</form>
-		     </div>
+		<form id="meusIngredientes">
+
+        <div id="alimentos">
+
+
         </div>
+		<div id="mantemID">
+				<input type="text" id="user" name="user" placeholder="" value="">
+		</div>	
+        <div class="justify-center">
+            <button id="fecharFood">Fechar</button>
+        </div>
+     </form>
+        <div class="justify-center">
+          <hr />
+        </div>
+      </div>
+		</div>
+		</div>
+		
+		    	<div class="modal" id="myModal6">
+		<div id="contentModal6" class="model-content8">
+		<div class="food">
+        <h1 class="entrarCadastrar">Alimentos banidos</h1>
         
+		<form id="meusIngredientes">
+
+        <div id="alimentosX">
+
+
+        </div>
+		<div id="mantemID">
+				<input type="text" id="user" name="user" placeholder="" value="">
+		</div>	
+        <div class="justify-center">
+            <button id="fecharFoodX">Fechar</button>
+        </div>
+     </form>
+        <div class="justify-center">
+          <hr />
+        </div>
+      </div>
+		</div>
+		</div>
+
        <div class="modal" id="myModal3">
 			<div id="contentModal3" class="model-content3">
 			<h1 class="entrarCadastrar">Editar perfil</h1>
 				
-		        <div id="msgErrorr"></div>
+		        <div id="msgError4"></div>
 		        <div id="msgSuccess4"></div>
 		
 		        <form id="updateForm">
 				<div id="mantemID">
-					<input type="text" id="id" name="id" placeholder="" value="${superusuario.id}" required />
+					<input type="text" id="id" name="id" placeholder="" value="" required />
 				 </div>
 				
 		          <div class="label-float">
@@ -283,12 +265,22 @@
 	<script src="js/signup.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
+			var userString = sessionStorage.getItem('user');
+			var user = JSON.parse(userString);
+			document.getElementById('id').value = user.id;
+		    document.getElementById('user').value = user.id;
 			const gerenciamento = document.getElementById("gerenciamento");
+			const editarPerfil = document.getElementById("editarPerfil");
 			var userString = sessionStorage.getItem('user');
 			var user = JSON.parse(userString);
 			if(user.permissao != 'S'){
 				gerenciamento.style.display = 'none';
+			} else {
+				editarPerfil.style.display = 'none';
 			}
+		    
+	        let msgError5 = document.getElementById("msgError5");
+	    	let msgSuccess5 = document.getElementById("msgSuccess5");
 		 });
 		
 		function redirectToProfile() {
@@ -301,32 +293,6 @@
 		   
     	}
     	
-    	function alterarUser(){
-			const modal = document.getElementById("myModal");
-			modal.style.display = 'block';
-			const fecharModal = document.getElementById("fecharModal");
-			
-			if(fecharModal){
-				fecharModal.addEventListener("click", function(event) {
-					event.preventDefault();
-	 				modal.style.display = "none";
-			    })
-			}			
-		}    	
-    	
-    	function alterarSenha(){
-			const modal1 = document.getElementById("myModal1");
-			modal1.style.display = 'block';
-			const fecharModal = document.getElementById("fecharModal1");
-			
-			if(fecharModal){
-				fecharModal.addEventListener("click", function(event) {
-					event.preventDefault();
-	 				modal1.style.display = "none";
-			    })
-			}
-		}
-		
 		function editarPerfil(){
 			const modal = document.getElementById("myModal3");
 			modal.style.display = 'block';
@@ -338,6 +304,53 @@
 	 				modal.style.display = "none";
 			    })
 			}
+			
+			const updateForm = document.getElementById("updateForm");
+			console.log(updateForm);
+			if(updateForm){
+				updateForm.addEventListener("submit", function (){
+				event.preventDefault();
+				
+				const updateURL = 'http://localhost:6789/usuario/update';
+		
+		        // Construir manualmente uma string com os dados do formulário
+		        const formData = new URLSearchParams(new FormData(updateForm));
+		
+		        // Adicione os dados do formulário como parâmetros de consulta à URL
+		        const urlComParametros = `${updateURL}?${formData}`;
+				
+		        // Requisição POST para inserir o usuário
+		        fetch(urlComParametros, {
+		            method: 'POST',
+		        })
+		        .then(response => response.json())
+		        .then(data => {
+		            console.log(data);
+		            if (data.success) {
+		                msgSuccess4.style.display = 'block';
+		                msgSuccess4.innerHTML = '<strong>Perfil alterado com sucesso!</strong>';
+		                msgError4.style.display = 'none';
+		                msgError4.innerHTML = '';
+					sessionStorage.removeItem('username');
+			msgSuccess.style.display = 'block';
+	        msgSuccess.innerHTML = '<strong>Até mais, espero te ver de novo!</strong>';
+			setTimeout(() => {
+		        window.location.href = `signin.html`;
+		    }, 1000);
+		            } else {
+	                    msgError4.style.display = 'block';
+	                    msgError4.innerHTML = '<strong>Erro ao editar perfil.</strong>';
+	                    msgSuccess4.innerHTML = '';
+	                    msgSuccess4.style.display = 'none';
+	                }
+		            
+		        })
+		        .catch(error => {
+		            console.error('Erro durante a solicitação POST:', error);
+		        });
+				
+			});
+			}
 		}
 		
 		function receitasSalvas(){
@@ -347,6 +360,86 @@
 			setTimeout(() => {
 		        window.location.href = `receitasSalvas.html?id=${user.id}`;
 		    }, 1000);	
+		}
+		
+		function ingSelecionados(){
+			var userString = sessionStorage.getItem('user');
+			var user = JSON.parse(userString);
+			const user_id = user.id;
+			const modal = document.getElementById("myModal5");
+			modal.style.display = 'block';
+			const fecharFood = document.getElementById("fecharFood");
+			
+			if(fecharFood){
+				fecharFood.addEventListener("click", function(event) {
+					event.preventDefault();
+	 				modal.style.display = "none";
+			    })
+			}
+		        fetch(`http://localhost:6789/ingrediente/selecionados?id=${user_id}`)
+		            .then(response => response.json())
+		            .then(data => {
+		                const mostrarIngredientes = document.getElementById("alimentos");
+		                mostrarIngredientes.innerHTML = "";
+						console.log(data);
+		                if (data) {
+		                    data.forEach(ingrediente => {
+		                        const divIngrediente = document.createElement('div');
+		                        divIngrediente.id = ingrediente.id;
+		
+		                        const h2Ingrediente = document.createElement('h2');
+		                        h2Ingrediente.textContent = ingrediente.nome;
+		
+		                        divIngrediente.appendChild(h2Ingrediente);
+		                        mostrarIngredientes.appendChild(divIngrediente);
+
+		                        divIngrediente.style.backgroundImage = `url('${ingrediente.imagem}')`;
+		                    });
+		                } else {
+		                    console.error('Resposta inválida. A propriedade "ingrediente" está ausente.');
+		                }
+		            })
+		            .catch(error => console.error('Erro ao obter ingredientes:', error));	
+		}
+		
+		function ingBanidos(){
+			var userString = sessionStorage.getItem('user');
+			var user = JSON.parse(userString);
+			const user_id = user.id;
+			const modal = document.getElementById("myModal6");
+			modal.style.display = 'block';
+			const fecharFood = document.getElementById("fecharFoodX");
+			
+			if(fecharFood){
+				fecharFood.addEventListener("click", function(event) {
+					event.preventDefault();
+	 				modal.style.display = "none";
+			    })
+			}
+		        fetch(`http://localhost:6789/ingrediente/banidos?id=${user_id}`)
+		            .then(response => response.json())
+		            .then(data => {
+		                const mostrarIngrediente = document.getElementById("alimentosX");
+		                mostrarIngrediente.innerHTML = "";
+						console.log(data);
+		                if (data) {
+		                    data.forEach(ingrediente => {
+		                        const divIngrediente = document.createElement('div');
+		                        divIngrediente.id = ingrediente.id;
+		
+		                        const h2Ingrediente = document.createElement('h2');
+		                        h2Ingrediente.textContent = ingrediente.nome;
+		
+		                        divIngrediente.appendChild(h2Ingrediente);
+		                        mostrarIngrediente.appendChild(divIngrediente);
+
+		                        divIngrediente.style.backgroundImage = `url('${ingrediente.imagem}')`;
+		                    });
+		                } else {
+		                    console.error('Resposta inválida. A propriedade "ingrediente" está ausente.');
+		                }
+		            })
+		            .catch(error => console.error('Erro ao obter ingredientes:', error));	
 		}
     	
     	function sair(){
