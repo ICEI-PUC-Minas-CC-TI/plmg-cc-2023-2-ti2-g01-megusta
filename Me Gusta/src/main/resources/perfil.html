@@ -62,7 +62,6 @@
         	</div>	
         	<div class="justify-center">
 				<button id="note">Escrever anotação</button>
-				<button id="limpar">Limpar mural</button>
         	</div>	
         	<div class="modal" id="modalNote">
 			<div class="model-content4">
@@ -142,10 +141,10 @@
 			email.innerHTML += `${usuario.email}`;		
 			const genero = document.getElementById("perfilGenero");
 			genero.innerHTML = "";
-			genero.innerHTML += `${usuario.nome}`;
+			genero.innerHTML += `${usuario.genero}`;
 			const idade = document.getElementById("perfilIdade");
 			idade.innerHTML = "";
-			idade.innerHTML += `${usuario.email}`;
+			idade.innerHTML += `${usuario.idade}`;
 			const user = document.getElementById("perfilUser");
 			user.innerHTML = "";
 			user.innerHTML += `${usuario.usuario}`;									
@@ -292,7 +291,7 @@
 		
 		    apagar.addEventListener("click", function (event) {
 		        fetch(`http://localhost:6789/deletar/${note}`, {
-		            method: 'POST', // Corrected to use the POST method
+		            method: 'POST', 
 		        })
 		            .then(response => response.json())
 		            .then(data => {
