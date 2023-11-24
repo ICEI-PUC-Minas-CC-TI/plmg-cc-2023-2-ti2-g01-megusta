@@ -204,9 +204,31 @@ public class IngredienteService {
 	 * Recebe todas as linhas da tabela ingredientes no BD
 	 */
 	public String obterIngredientes() {
+		
 	    List<Ingrediente> ingredientes = dao.getIngredientes();
         Gson gson = new Gson();
         return gson.toJson(ingredientes);
+	}
+	
+	public String obterSelecionados(Request request, Response response) {
+		
+	    String idParam = request.queryParams("id");	    
+		UUID id = UUID.fromString(idParam);
+		
+		List<UUID> selected = dao.select(id);
+	    List<Ingrediente> selecionados = dao.getSelecionados(selected);
+        Gson gson = new Gson();
+        return gson.toJson(selecionados);
+	}
+	
+	public String obterBanidos(Request request, Response response) {
+		System.out.println("Banidos service");
+	    String idParam = request.queryParams("id");
+		UUID id = UUID.fromString(idParam);
+		List<UUID> banned = dao.banned(id);
+	    List<Ingrediente> banidos = dao.getBanidos(banned);
+        Gson gson = new Gson();
+        return gson.toJson(banidos);
 	}
 	
 	/* Método GET de ingredientes 

@@ -219,6 +219,76 @@ public class UsuarioService {
 		    return gson.toJson(resposta);
 		}
 		
+		/* Método de alteração de superusuário
+		 * Coleta dados dos formulários e envia para DAO
+		 */
+		public String alteraUser(Request request, Response response) {
+			System.out.println("At your service");
+			String idParam = request.queryParams("id");
+			UUID id = UUID.fromString(idParam);
+		    String nome = request.queryParams("nome");
+		 
+		    String sobrenome = request.queryParams("sobrenome");
+		    
+		    String user = request.queryParams("user");
+		
+		    String email = request.queryParams("email");
+		 
+		    int idade = Integer.parseInt(request.queryParams("idade"));
+		    
+		    String senhaAtual = request.queryParams("senhaAtual");
+		    
+		    String senha = request.queryParams("senha");
+		    String confirmSenha = request.queryParams("confirmSenha");
+		    char genero = request.queryParams("genero").charAt(0);
+		
+		    char permissao = 'N';
+		    String resp = "";
+		    boolean status = false;
+		    boolean userExists = false;
+		    boolean passwordIncorrect = false;
+		    boolean equalsPassword = true;
+
+		    try {
+		    	// Verifica se a senha atual corresponde à senha no BD
+		    	if(!(dao.verificaSenha(senhaAtual, user))){
+		    		passwordIncorrect = true; // Senha incorreta, aborta operação
+		    	  // Em caso afirmativo, verifica se a nova senha corresponde ao campo confirmar senha
+		    	} else if(senha.equals(confirmSenha)){
+		    		// Em caso positivo, verifica se o user é válido
+		    		if(!(dao.verificaUser(user))) {
+			        	userExists = true;
+			        } else {
+			        	// Em caso positivo, chama a função de atualizar
+			        	status = dao.atualizarUsuario(new Usuario(id, nome, sobrenome, user, senha, email, genero, idade, permissao));
+			        }
+
+			        if (status) {
+			            resp = "Usuário (" + nome + ") alterado!";
+			            response.status(201); // 201 Created
+			        } else {
+			            resp = "Usuário (" + nome + ") não alterado!";
+			            response.status(404); // 404 Not found
+			        }
+		    	} else {
+		    		equalsPassword = false;
+		    	}
+
+		        System.out.printf(resp);
+		    } catch (Exception e) {
+		        System.err.println("Erro inesperado: " + e.getMessage());
+		    }
+		    
+		    JSONObject resposta = new JSONObject();
+		    resposta.put("success", status);
+		    resposta.put("passwordIncorrect", passwordIncorrect);
+			resposta.put("userExists", userExists);
+			resposta.put("equalsPassword", equalsPassword);
+
+		    Gson gson = new Gson();
+		    return gson.toJson(resposta);
+		}
+		
 	/* Método de autenticação de usuário
 	 * Utilizado na operação de log-in
 	 */

@@ -125,6 +125,13 @@ public class Aplicacao {
 	    	return usuarioService.alteraSuperuser(request, response);
 	    });
 	    
+	    // Requisição para alterar um usuário
+	    post("/usuario/update", (request, response) -> { 
+	    	response.type("application/json");
+	    	System.out.println("Opa! Está tentando editar um usuário?");
+	    	return usuarioService.alteraUser(request, response);
+	    });
+	    
 	    // Requisição para deletar um usuário
 	    post("/deletarUsuario", (request, response) -> { 
 	    	
@@ -142,7 +149,7 @@ public class Aplicacao {
 	    /*------ REQUISIÇÕES DE INGREDIENTE ------*/
         // Requisição para registrar ingrediente
         post("/ingrediente/insert", (request, response) -> {  
-        	System.out.println("Opa! Está tentando cadastrar um ingrediente?");
+        	
         	return ingredienteService.insereIngrediente(request, response);
         });
         
@@ -151,6 +158,20 @@ public class Aplicacao {
 	        response.type("application/json");
 	        return ingredienteService.obterIngredientes();
 	    });
+	    
+	     // Requisição para listar os ingredientes selecionados
+		    get("/ingrediente/selecionados", (request, response) -> {
+		    	
+		        response.type("application/json");
+		        return ingredienteService.obterSelecionados(request, response);
+		    });
+		    
+	     // Requisição para listar os ingredientes banidos
+		    get("/ingrediente/banidos", (request, response) -> {
+		    	System.out.println("Banidos");
+		        response.type("application/json");
+		        return ingredienteService.obterBanidos(request, response);
+		    });		    
 	    
 	    // Requisição para exibir os ingredientes ordenados em ordem alfabética
 	    get("/ingrediente/ordenar", (request, response) -> {

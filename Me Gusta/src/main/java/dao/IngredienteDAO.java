@@ -161,6 +161,136 @@ public class IngredienteDAO extends DAO {
         return ingredientes;
     }
     
+    public List<Ingrediente> getSelecionados(List<UUID> selecionados) {
+        List<Ingrediente> ingredientes = new ArrayList<>();
+
+        try {
+            // Cria a consulta SQL com uma cláusula WHERE para filtrar os ingredientes pelos IDs na lista selecionados
+            String sql = "SELECT * FROM ingrediente WHERE id IN (";
+            for (int i = 0; i < selecionados.size(); i++) {
+                sql += "'" + selecionados.get(i) + "'";
+                if (i < selecionados.size() - 1) {
+                    sql += ",";
+                }
+            }
+            sql += ")";
+
+            Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                UUID id = (UUID) rs.getObject("id");
+                String nome = rs.getString("nome");
+                String categoria = rs.getString("categoria");
+
+                // Recuperando a string JSON do banco
+                String nutritionalinfoString = rs.getString("nutritionalinfo");
+
+                // Convertendo a string JSON armazenada no banco para um objeto JSON
+                JSONObject nutritionalinfo = parseJson(nutritionalinfoString);
+
+                byte[] imagem = rs.getBytes("imagem");
+
+                Ingrediente ingrediente = new Ingrediente(id, nome, categoria, nutritionalinfo, imagem);
+                ingredientes.add(ingrediente);
+            }
+            st.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ingredientes;
+    }
+
+    public List<Ingrediente> getBanidos(List<UUID> banidos) {
+        List<Ingrediente> ingredientes = new ArrayList<>();
+
+        try {
+            // Cria a consulta SQL com uma cláusula WHERE para filtrar os ingredientes pelos IDs na lista selecionados
+            String sql = "SELECT * FROM ingrediente WHERE id IN (";
+            for (int i = 0; i < banidos.size(); i++) {
+                sql += "'" + banidos.get(i) + "'";
+                if (i < banidos.size() - 1) {
+                    sql += ",";
+                }
+            }
+            sql += ")";
+
+            Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                UUID id = (UUID) rs.getObject("id");
+                String nome = rs.getString("nome");
+                String categoria = rs.getString("categoria");
+
+                // Recuperando a string JSON do banco
+                String nutritionalinfoString = rs.getString("nutritionalinfo");
+
+                // Convertendo a string JSON armazenada no banco para um objeto JSON
+                JSONObject nutritionalinfo = parseJson(nutritionalinfoString);
+
+                byte[] imagem = rs.getBytes("imagem");
+
+                Ingrediente ingrediente = new Ingrediente(id, nome, categoria, nutritionalinfo, imagem);
+                ingredientes.add(ingrediente);
+            }
+            st.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ingredientes;
+    }
+    
+    public List<UUID> select(UUID user_id) {
+        List<UUID> selected = new ArrayList<>();
+        System.out.println("Selecionados dao");
+        try {
+            String query = "SELECT ingredient_id FROM ingredientesselecionados WHERE user_id = ?";
+            PreparedStatement ps = conexao.prepareStatement(query);
+            ps.setObject(1, user_id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                UUID id = (UUID) rs.getObject("ingredient_id");
+                selected.add(id);
+            }
+
+            ps.close();
+            rs.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+        }
+
+        return selected;
+    }
+    
+    public List<UUID> banned(UUID user_id) {
+        List<UUID> banned = new ArrayList<>();
+        System.out.println("Banidos dao");
+        try {
+            String query = "SELECT ingredient_id FROM ingredientesbanidos WHERE user_id = ?";
+            PreparedStatement ps = conexao.prepareStatement(query);
+            ps.setObject(1, user_id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                UUID id = (UUID) rs.getObject("ingredient_id");
+                banned.add(id);
+            }
+
+            ps.close();
+            rs.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+        }
+
+        return banned;
+    }
+    
     public List<Ingrediente> sort(List<Ingrediente> ingredientList) {
         int n = ingredientList.size();
         return quicksort(ingredientList, 0, n - 1);
