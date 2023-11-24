@@ -19,7 +19,7 @@ public class AnotacaoDAO extends DAO{
 		boolean status = false;
 		try {
 			PreparedStatement ps = conexao.prepareStatement (
-					"INSERT INTO \"MG\".anotacao (id, mensagem, cor, usuario_id) VALUES(?, ?, ?, ?)" );
+					"INSERT INTO anotacao (id, mensagem, cor, usuario_id) VALUES(?, ?, ?, ?)" );
 			
 			ps.setObject(1, anotacao.getId());
 			ps.setString(2, anotacao.getMessage()!= null ? anotacao.getMessage() : "");
@@ -41,7 +41,7 @@ public class AnotacaoDAO extends DAO{
 		System.out.println("Quase lá");
         boolean status = false;
         try {
-            PreparedStatement ps = conexao.prepareStatement("DELETE FROM \"MG\".anotacao WHERE id = ?");
+            PreparedStatement ps = conexao.prepareStatement("DELETE FROM anotacao WHERE id = ?");
             ps.setObject(1, note_id);
             ps.executeUpdate();
             ps.close();
@@ -55,7 +55,7 @@ public class AnotacaoDAO extends DAO{
 	public boolean apagarTodasAnotacoes (UUID user_id) {
         boolean status = false;
         try {
-            PreparedStatement ps = conexao.prepareStatement("DELETE FROM \"MG\".anotacao WHERE usuario_id = ?");
+            PreparedStatement ps = conexao.prepareStatement("DELETE FROM anotacao WHERE usuario_id = ?");
             ps.setObject(1, user_id);
             ps.executeUpdate();
             ps.close();
@@ -72,7 +72,7 @@ public class AnotacaoDAO extends DAO{
 		UUID id = null, user_id = null; String message = "", color = "";
 		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = st.executeQuery("SELECT * FROM \"MG\".anotacao");
+            ResultSet rs = st.executeQuery("SELECT * FROM anotacao");
             
             while (rs.next()) {
             	user_id = (UUID) rs.getObject("usuario_id");
