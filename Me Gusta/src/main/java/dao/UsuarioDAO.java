@@ -25,7 +25,7 @@ public class UsuarioDAO extends DAO {
         try {
             
             PreparedStatement ps = conexao.prepareStatement(
-                    "INSERT INTO \"MG\".usuario (id, nome, sobrenome, usuario, email, idade, genero, senha, permissao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO usuario (id, nome, sobrenome, usuario, email, idade, genero, senha, permissao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             ps.setObject(1, usuario.getId());
             ps.setString(2, usuario.getNome() != null ? usuario.getNome() : "");
@@ -58,7 +58,7 @@ public class UsuarioDAO extends DAO {
         
         try {
             PreparedStatement ps = conexao.prepareStatement(
-                    "UPDATE \"MG\".usuario SET nome = ?, sobrenome = ?, usuario = ?, email = ?, idade = ?, genero = ?, senha = ?, permissao = ? WHERE id = ?");
+                    "UPDATE usuario SET nome = ?, sobrenome = ?, usuario = ?, email = ?, idade = ?, genero = ?, senha = ?, permissao = ? WHERE id = ?");
     
             ps.setString(1, usuario.getNome());
             ps.setString(2, usuario.getSobrenome());
@@ -88,7 +88,7 @@ public class UsuarioDAO extends DAO {
     
         try {
             Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = st.executeQuery("SELECT * FROM \"MG\".usuario");
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario");
             while (rs.next()) {
                 UUID id = (UUID) rs.getObject("id");
                 String nome = rs.getString("nome");
@@ -178,7 +178,7 @@ public class UsuarioDAO extends DAO {
         Usuario username = new Usuario();
         try {
             Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = st.executeQuery("SELECT * FROM \"MG\".usuario");
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario");
 
             // rs.next() para posicionar o cursor no primeiro resultado
             while (rs.next()) {
@@ -216,7 +216,7 @@ public class UsuarioDAO extends DAO {
         String senhaCriptografada = toMD5(senha);
         
         try {
-            PreparedStatement ps = conexao.prepareStatement("SELECT * FROM \"MG\".usuario WHERE usuario = ?");
+            PreparedStatement ps = conexao.prepareStatement("SELECT * FROM usuario WHERE usuario = ?");
 
             ps.setString(1, user);
             ResultSet rs = ps.executeQuery();
@@ -246,7 +246,7 @@ public class UsuarioDAO extends DAO {
         try {
             
             PreparedStatement ps = conexao.prepareStatement(
-                    "INSERT INTO \"MG\".usuariorestricao (user_id, restriction_id) VALUES (?, ?)");
+                    "INSERT INTO usuariorestricao (user_id, restriction_id) VALUES (?, ?)");
 
             for(UUID restricao : restricoesList) {
                 ps.setObject(1, id);
@@ -273,13 +273,13 @@ public class UsuarioDAO extends DAO {
         try {
             // Remove todas as associações existentes na tabela ingredienteRestricao
             PreparedStatement psDelete = conexao.prepareStatement(
-                "DELETE FROM \"MG\".usuariorestricao WHERE user_id = ?");
+                "DELETE FROM usuariorestricao WHERE user_id = ?");
             psDelete.setObject(1, id);
             psDelete.executeUpdate();
             psDelete.close();
             
             PreparedStatement ps = conexao.prepareStatement(
-                    "INSERT INTO \"MG\".usuariorestricao (user_id, restriction_id) VALUES (?, ?)");
+                    "INSERT INTO usuariorestricao (user_id, restriction_id) VALUES (?, ?)");
 
             for(UUID restricao : restricoesList) {
                 ps.setObject(1, id);
@@ -305,7 +305,7 @@ public class UsuarioDAO extends DAO {
     	
         boolean status = false;
         try {
-            PreparedStatement ps = conexao.prepareStatement("DELETE FROM \"MG\".usuariorestricao WHERE user_id = ?");
+            PreparedStatement ps = conexao.prepareStatement("DELETE FROM usuariorestricao WHERE user_id = ?");
             ps.setObject(1, id);
             ps.executeUpdate();
             ps.close();
@@ -324,7 +324,7 @@ public class UsuarioDAO extends DAO {
         try {
             
             PreparedStatement ps = conexao.prepareStatement(
-                    "INSERT INTO \"MG\".ingredientesselecionados (user_id, ingredient_id) VALUES (?, ?)");
+                    "INSERT INTO ingredientesselecionados (user_id, ingredient_id) VALUES (?, ?)");
 
             for(UUID ingrediente : ingredientesList) {
                 ps.setObject(1, id);
@@ -351,13 +351,13 @@ public class UsuarioDAO extends DAO {
         try {
             // Remove todas as associações existentes na tabela ingredienteRestricao
             PreparedStatement psDelete = conexao.prepareStatement(
-                "DELETE FROM \"MG\".ingredientesselecionados WHERE user_id = ?");
+                "DELETE FROM ingredientesselecionados WHERE user_id = ?");
             psDelete.setObject(1, id);
             psDelete.executeUpdate();
             psDelete.close();
             
             PreparedStatement ps = conexao.prepareStatement(
-                    "INSERT INTO \"MG\".ingredientesselecionados (user_id, ingredient_id) VALUES (?, ?)");
+                    "INSERT INTO ingredientesselecionados (user_id, ingredient_id) VALUES (?, ?)");
 
             for(UUID ingrediente : ingredientesList) {
                 ps.setObject(1, id);
@@ -383,7 +383,7 @@ public class UsuarioDAO extends DAO {
     	
         boolean status = false;
         try {
-            PreparedStatement ps = conexao.prepareStatement("DELETE FROM \"MG\".ingredientesselecionados WHERE user_id = ?");
+            PreparedStatement ps = conexao.prepareStatement("DELETE FROM ingredientesselecionados WHERE user_id = ?");
             ps.setObject(1, id);
             ps.executeUpdate();
             ps.close();
@@ -402,7 +402,7 @@ public class UsuarioDAO extends DAO {
         try {
             
             PreparedStatement ps = conexao.prepareStatement(
-                    "INSERT INTO \"MG\".ingredientesbanidos (user_id, ingredient_id) VALUES (?, ?)");
+                    "INSERT INTO ingredientesbanidos (user_id, ingredient_id) VALUES (?, ?)");
 
             for(UUID ingrediente : ingredientesList) {
                 ps.setObject(1, id);
@@ -429,13 +429,13 @@ public class UsuarioDAO extends DAO {
         try {
             // Remove todas as associações existentes na tabela ingredienteRestricao
             PreparedStatement psDelete = conexao.prepareStatement(
-                "DELETE FROM \"MG\".ingredientesbanidos WHERE user_id = ?");
+                "DELETE FROM ingredientesbanidos WHERE user_id = ?");
             psDelete.setObject(1, id);
             psDelete.executeUpdate();
             psDelete.close();
             
             PreparedStatement ps = conexao.prepareStatement(
-                    "INSERT INTO \"MG\".ingredientesbanidos (user_id, ingredient_id) VALUES (?, ?)");
+                    "INSERT INTO ingredientesbanidos (user_id, ingredient_id) VALUES (?, ?)");
 
             for(UUID ingrediente : ingredientesList) {
                 ps.setObject(1, id);
@@ -461,7 +461,7 @@ public class UsuarioDAO extends DAO {
     	
         boolean status = false;
         try {
-            PreparedStatement ps = conexao.prepareStatement("DELETE FROM \"MG\".ingredientesbanidos WHERE user_id = ?");
+            PreparedStatement ps = conexao.prepareStatement("DELETE FROM ingredientesbanidos WHERE user_id = ?");
             ps.setObject(1, id);
             ps.executeUpdate();
             ps.close();
@@ -477,13 +477,13 @@ public class UsuarioDAO extends DAO {
 
         try {
             // Verifica a tabela ingredientesselecionados
-            PreparedStatement ps1 = conexao.prepareStatement("SELECT * FROM \"MG\".ingredientesselecionados WHERE user_id = ?");
+            PreparedStatement ps1 = conexao.prepareStatement("SELECT * FROM ingredientesselecionados WHERE user_id = ?");
             ps1.setObject(1, id);
             ResultSet rs1 = ps1.executeQuery();
             status1 = rs1.next(); // Define status1 como true se houver um resultado
 
             // Verifica a tabela ingredientesbanidos
-            PreparedStatement ps2 = conexao.prepareStatement("SELECT * FROM \"MG\".ingredientesbanidos WHERE user_id = ?");
+            PreparedStatement ps2 = conexao.prepareStatement("SELECT * FROM ingredientesbanidos WHERE user_id = ?");
             ps2.setObject(1, id);
             ResultSet rs2 = ps2.executeQuery();
             status2 = rs2.next(); // Define status2 como true se houver um resultado
@@ -513,7 +513,7 @@ public class UsuarioDAO extends DAO {
     	
         boolean status = false;
         try {
-            PreparedStatement ps = conexao.prepareStatement("DELETE FROM \"MG\".usuario");
+            PreparedStatement ps = conexao.prepareStatement("DELETE FROM usuario");
             ps.executeUpdate();
             ps.close();
             status = true;
@@ -530,7 +530,7 @@ public class UsuarioDAO extends DAO {
     	
         boolean status = false;
         try {
-            PreparedStatement ps = conexao.prepareStatement("DELETE FROM \"MG\".usuario WHERE usuario = ?");
+            PreparedStatement ps = conexao.prepareStatement("DELETE FROM usuario WHERE usuario = ?");
             ps.setString(1, username);
             ps.executeUpdate();
             ps.close();

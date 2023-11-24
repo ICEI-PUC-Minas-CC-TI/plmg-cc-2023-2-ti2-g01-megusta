@@ -29,7 +29,7 @@ public class ReceitaDAO extends DAO {
         try {
             // Insere o ingrediente na tabela receita
             PreparedStatement ps = conexao.prepareStatement(
-                "INSERT INTO \"MG\".receita (id, usuario_id, titulo, descricao, imagem, instrucao, tempopreparo, porcao, dificuldade, custo, nutritionalinfo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO receita (id, usuario_id, titulo, descricao, imagem, instrucao, tempopreparo, porcao, dificuldade, custo, nutritionalinfo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS);
             UUID receitaId = receita.getId();
             ps.setObject(1, receitaId);
@@ -59,7 +59,7 @@ public class ReceitaDAO extends DAO {
             for (UUID ingredientId : ingredientesList) {
         
                 try { PreparedStatement psIngrediente = conexao.prepareStatement(
-                        "INSERT INTO \"MG\".receitaingredientes (recipe_id, ingredient_id, quantidade) VALUES (?, ?, ?)");
+                        "INSERT INTO receitaingredientes (recipe_id, ingredient_id, quantidade) VALUES (?, ?, ?)");
 
                 	psIngrediente.setObject(1, receitaId);
                 	psIngrediente.setObject(2, ingredientId);
@@ -90,7 +90,7 @@ public class ReceitaDAO extends DAO {
         try {
             // Atualiza
             PreparedStatement ps = conexao.prepareStatement(
-            		"UPDATE \"MG\".receita SET titulo = ?, descricao = ?, instrucao = ?, tempoPreparo = ?, custo = ?, dificuldade = ?, porcao = ?, imagem = ?, nutritionalinfo = ? WHERE id = ? AND usuario_id = ?");
+            		"UPDATE receita SET titulo = ?, descricao = ?, instrucao = ?, tempoPreparo = ?, custo = ?, dificuldade = ?, porcao = ?, imagem = ?, nutritionalinfo = ? WHERE id = ? AND usuario_id = ?");
 
             ps.setString(1, receita.getTitulo() != null ? receita.getTitulo() : "");
             ps.setString(2, receita.getDescricao() != null ? receita.getDescricao() : "");
@@ -120,7 +120,7 @@ public class ReceitaDAO extends DAO {
             
             // Remove todas as associações existentes na tabela receitaingredientes
             PreparedStatement psDelete = conexao.prepareStatement(
-                "DELETE FROM \"MG\".receitaingredientes WHERE recipe_id = ?");
+                "DELETE FROM receitaingredientes WHERE recipe_id = ?");
             psDelete.setObject(1, receitaId);
             psDelete.executeUpdate();
             psDelete.close();
@@ -128,7 +128,7 @@ public class ReceitaDAO extends DAO {
             for (UUID ingredientId : ingredientesList) {
                 
                 try { PreparedStatement psIngrediente = conexao.prepareStatement(
-                        "INSERT INTO \"MG\".receitaingredientes (recipe_id, ingredient_id, quantidade) VALUES (?, ?, ?)");
+                        "INSERT INTO receitaingredientes (recipe_id, ingredient_id, quantidade) VALUES (?, ?, ?)");
 
                 	psIngrediente.setObject(1, receitaId);
                 	psIngrediente.setObject(2, ingredientId);
@@ -159,7 +159,7 @@ public class ReceitaDAO extends DAO {
         int count = 0;
 
         try {
-				PreparedStatement ps =  conexao.prepareStatement("select * from \"MG\".receita where id not in(select recipe_id from \"MG\".receitaingredientes where ingredient_id in(select ingredient_id from \"MG\".ingredienterestricao where restriction_id in (select restriction_id from  \"MG\".usuariorestricao where user_id=?)))");
+				PreparedStatement ps =  conexao.prepareStatement("select * from receita where id not in(select recipe_id from receitaingredientes where ingredient_id in(select ingredient_id from ingredienterestricao where restriction_id in (select restriction_id from  usuariorestricao where user_id=?)))");
 				ps.setObject(1, user_id);
                     try (ResultSet rs = ps.executeQuery()) {
                         while (rs.next()) {
@@ -196,7 +196,7 @@ public class ReceitaDAO extends DAO {
     public boolean excluirReceita(UUID id) {
         boolean status = false;
         try {
-            PreparedStatement ps = conexao.prepareStatement("DELETE FROM \"MG\".receita WHERE id = ?");
+            PreparedStatement ps = conexao.prepareStatement("DELETE FROM receita WHERE id = ?");
             ps.setObject(1, id);
             ps.executeUpdate();
             ps.close();
@@ -212,7 +212,7 @@ public class ReceitaDAO extends DAO {
         System.out.println("Quase lá. Pegando as receitas.");
         try {
             Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = st.executeQuery("SELECT * FROM \"MG\".receita");
+            ResultSet rs = st.executeQuery("SELECT * FROM receita");
             while (rs.next()) {
                 UUID id = (UUID) rs.getObject("id");
                 UUID usuario_id = (UUID) rs.getObject("usuario_id");
@@ -257,7 +257,7 @@ public class ReceitaDAO extends DAO {
         System.out.println("Quase lá. Pegando minhas receitas.");
         try {
             Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = st.executeQuery("SELECT * FROM \"MG\".receita");
+            ResultSet rs = st.executeQuery("SELECT * FROM receita");
             while (rs.next()) {
             	UUID usuario_id = (UUID) rs.getObject("usuario_id");
             	if(usuario_id.toString().equals(user_id.toString())) {
@@ -435,7 +435,7 @@ public class ReceitaDAO extends DAO {
     	int count = 0;
         try {
             Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = st.executeQuery("SELECT * FROM \"MG\".reviews");
+            ResultSet rs = st.executeQuery("SELECT * FROM reviews");
             while (rs.next()) {
                 UUID recipe_id = (UUID) rs.getObject("recipe_id");
                 if(id.toString().equals(recipe_id.toString())) {
@@ -464,7 +464,7 @@ public class ReceitaDAO extends DAO {
     	String nutritionalinfoString = "";
         try {
             Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = st.executeQuery("SELECT * FROM \"MG\".ingredientesreceita");
+            ResultSet rs = st.executeQuery("SELECT * FROM ingredientesreceita");
             while (rs.next()) {
                 UUID recipe_id = (UUID) rs.getObject("recipe_id");
                 if(id.toString().equals(recipe_id.toString())) {
@@ -475,7 +475,7 @@ public class ReceitaDAO extends DAO {
             st.close();
             
             st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            rs = st.executeQuery("SELECT * FROM \"MG\".ingredientes");
+            rs = st.executeQuery("SELECT * FROM ingredientes");
             for(int i = 0; i < ingredientesId.size(); i++) {
                 while (rs.next()) {
                     UUID ingredient_id = (UUID) rs.getObject("id");
@@ -524,7 +524,7 @@ public class ReceitaDAO extends DAO {
         Receita receita = null;
         try {
             Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = st.executeQuery("SELECT * FROM \"MG\".receita");
+            ResultSet rs = st.executeQuery("SELECT * FROM receita");
 
             // rs.next() para posicionar o cursor no primeiro resultado
             while (rs.next()) {
@@ -581,7 +581,7 @@ public class ReceitaDAO extends DAO {
 
             // Inserir a nova avaliação
             PreparedStatement ps = conexao.prepareStatement(
-                    "INSERT INTO \"MG\".reviews (user_id, recipe_id, review) VALUES (?, ?, ?)");
+                    "INSERT INTO reviews (user_id, recipe_id, review) VALUES (?, ?, ?)");
 
             ps.setObject(1, user_id);
             ps.setObject(2, recipe_id);
@@ -601,7 +601,7 @@ public class ReceitaDAO extends DAO {
 
     private boolean avaliacaoExistente(UUID user_id, UUID recipe_id) throws SQLException {
         PreparedStatement ps = conexao.prepareStatement(
-                "SELECT COUNT(*) FROM \"MG\".reviews WHERE user_id = ? AND recipe_id = ?");
+                "SELECT COUNT(*) FROM reviews WHERE user_id = ? AND recipe_id = ?");
         ps.setObject(1, user_id);
         ps.setObject(2, recipe_id);
 
@@ -617,7 +617,7 @@ public class ReceitaDAO extends DAO {
 
     private void apagarAvaliacao(UUID user_id, UUID recipe_id) throws SQLException {
         PreparedStatement ps = conexao.prepareStatement(
-                "DELETE FROM \"MG\".reviews WHERE user_id = ? AND recipe_id = ?");
+                "DELETE FROM reviews WHERE user_id = ? AND recipe_id = ?");
         ps.setObject(1, user_id);
         ps.setObject(2, recipe_id);
 
@@ -630,7 +630,7 @@ public class ReceitaDAO extends DAO {
     	System.out.println("Calcular reviews");
         try {
             Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet  rs = st.executeQuery("SELECT * FROM \"MG\".reviews");
+            ResultSet  rs = st.executeQuery("SELECT * FROM reviews");
 
             while (rs.next()) {
                 UUID id = (UUID) rs.getObject("recipe_id");
@@ -656,7 +656,7 @@ public class ReceitaDAO extends DAO {
     public boolean apagarTodasReceitas() {
         boolean status = false;
         try {
-            PreparedStatement ps = conexao.prepareStatement("DELETE FROM \"MG\".receita");
+            PreparedStatement ps = conexao.prepareStatement("DELETE FROM receita");
             ps.executeUpdate();
             ps.close();
             status = true;
@@ -710,7 +710,7 @@ public class ReceitaDAO extends DAO {
 
         try {
             Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet  rs = st.executeQuery("SELECT * FROM \"MG\".ingrediente");
+            ResultSet  rs = st.executeQuery("SELECT * FROM ingrediente");
 
             while (rs.next()) {
                 UUID ingredient_id = (UUID) rs.getObject("id");
@@ -761,7 +761,7 @@ public class ReceitaDAO extends DAO {
     	
     	try {
             PreparedStatement ps = conexao.prepareStatement(
-                    "INSERT INTO \"MG\".receitassalvas (user_id, recipe_id) VALUES (?, ?)");
+                    "INSERT INTO receitassalvas (user_id, recipe_id) VALUES (?, ?)");
 
             ps.setObject(1, user_id);
             ps.setObject(2, recipe_id);
@@ -779,7 +779,7 @@ public class ReceitaDAO extends DAO {
     
     public boolean isSalva(UUID user_id, UUID recipe_id) throws SQLException {
         PreparedStatement ps = conexao.prepareStatement(
-                "SELECT COUNT(*) FROM \"MG\".receitassalvas WHERE user_id = ? AND recipe_id = ?");
+                "SELECT COUNT(*) FROM receitassalvas WHERE user_id = ? AND recipe_id = ?");
         ps.setObject(1, user_id);
         ps.setObject(2, recipe_id);
 
@@ -800,7 +800,7 @@ public class ReceitaDAO extends DAO {
         UUID recipe_id = null;
         try {
             Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = st.executeQuery("SELECT * FROM \"MG\".restricao");
+            ResultSet rs = st.executeQuery("SELECT * FROM restricao");
             while (rs.next()) {
                 UUID usuario_id = (UUID) rs.getObject("user_id");
                
@@ -814,7 +814,7 @@ public class ReceitaDAO extends DAO {
             st.close();
             
             st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            rs = st.executeQuery("SELECT * FROM \"MG\".receitas");
+            rs = st.executeQuery("SELECT * FROM receitas");
 
             for(UUID receitaId : receitasIds) {
                 while (rs.next()) {
@@ -862,7 +862,7 @@ public class ReceitaDAO extends DAO {
     public boolean liberarReceita(UUID user_id, UUID recipe_id) {
         boolean status = false;
         try {
-            PreparedStatement ps = conexao.prepareStatement("DELETE FROM \"MG\".resceitassalvas WHERE recipe_id = ? AND user_id = ?");
+            PreparedStatement ps = conexao.prepareStatement("DELETE FROM resceitassalvas WHERE recipe_id = ? AND user_id = ?");
             ps.setObject(1, recipe_id);
             ps.setObject(2, user_id);
             ps.executeUpdate();
@@ -877,7 +877,7 @@ public class ReceitaDAO extends DAO {
     public boolean liberarReceitas(UUID user_id) {
         boolean status = false;
         try {
-            PreparedStatement ps = conexao.prepareStatement("DELETE FROM \"MG\".receitassalvas WHERE user_id = ?");
+            PreparedStatement ps = conexao.prepareStatement("DELETE FROM receitassalvas WHERE user_id = ?");
             ps.setObject(1, user_id);
             ps.executeUpdate();
             ps.close();

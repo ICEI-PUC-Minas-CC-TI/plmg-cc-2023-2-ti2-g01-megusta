@@ -26,7 +26,7 @@ public class RestricaoDAO extends DAO {
         try {
             
             PreparedStatement ps = conexao.prepareStatement(
-                    "INSERT INTO \"MG\".restricao (id, tipo, nome) VALUES (?, ?, ?)");
+                    "INSERT INTO restricao (id, tipo, nome) VALUES (?, ?, ?)");
 
             ps.setObject(1, restricao.getId());
             ps.setString(3, restricao.getNome() != null ? restricao.getNome() : "");
@@ -50,7 +50,7 @@ public class RestricaoDAO extends DAO {
         
         try {
             PreparedStatement ps = conexao.prepareStatement(
-                    "UPDATE \"MG\".restricao SET nome = ?, tipo = ? WHERE id = ?");
+                    "UPDATE restricao SET nome = ?, tipo = ? WHERE id = ?");
     
             ps.setString(1, restricao.getNome());
             ps.setString(2, restricao.getTipo());
@@ -69,7 +69,7 @@ public class RestricaoDAO extends DAO {
     public boolean excluirRestricao(String nome) {
         boolean status = false;
         try {
-            PreparedStatement ps = conexao.prepareStatement("DELETE FROM \"MG\".restricao WHERE nome = ?");
+            PreparedStatement ps = conexao.prepareStatement("DELETE FROM restricao WHERE nome = ?");
             ps.setString(1, nome);
             ps.executeUpdate();
             ps.close();
@@ -85,7 +85,7 @@ public class RestricaoDAO extends DAO {
     
         try {
             Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = st.executeQuery("SELECT * FROM \"MG\".restricao");
+            ResultSet rs = st.executeQuery("SELECT * FROM restricao");
             while (rs.next()) {
                 UUID id = (UUID) rs.getObject("id");
                
@@ -181,7 +181,7 @@ public class RestricaoDAO extends DAO {
         Restricao restricao = null;
         try {
             Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = st.executeQuery("SELECT * FROM \"MG\".restricao");
+            ResultSet rs = st.executeQuery("SELECT * FROM restricao");
 
             // rs.next() para posicionar o cursor no primeiro resultado
             while (rs.next()) {
@@ -208,7 +208,7 @@ public class RestricaoDAO extends DAO {
     public boolean restricaoExiste(String name) {
         boolean status = false;
 
-        try (PreparedStatement ps = conexao.prepareStatement("SELECT * FROM \"MG\".restricao WHERE nome = ?")) {
+        try (PreparedStatement ps = conexao.prepareStatement("SELECT * FROM restricao WHERE nome = ?")) {
             ps.setString(1, name);
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -224,7 +224,7 @@ public class RestricaoDAO extends DAO {
     public boolean apagarTodasRestricoes() {
         boolean status = false;
         try {
-            PreparedStatement ps = conexao.prepareStatement("DELETE FROM \"MG\".restricao");
+            PreparedStatement ps = conexao.prepareStatement("DELETE FROM restricao");
             ps.executeUpdate();
             ps.close();
             status = true;
