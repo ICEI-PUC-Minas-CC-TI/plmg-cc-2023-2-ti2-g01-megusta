@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/averia" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/estilo.css">
+    <title>Postar Receita</title>
+</head>
+
+<body>
+	<script>
+		let i = 1;
+		
+		document.addEventListener('DOMContentLoaded', function() {
+		    // Recupera o nome de usuário da sessionStorage
+		    const username = sessionStorage.getItem('username');
+		
+		    // Define o valor com o nome de usuário
+		    document.getElementById('user').value = username;
+		  carregarInstrucoes();
+		  const plus = document.getElementById("plus");
+		  const minus = document.getElementById("minus");
+		  plus.addEventListener('click', function() {
+		    event.preventDefault();
+		    carregarInstrucoes();
+		  });
+		  
+		  minus.addEventListener('click', function() {
+		    event.preventDefault();
+		    removerInstrucao();
+		  });
+		  
+			// Fechar e abrir o modal de ingredientes
+
+		    var fecharModal = document.getElementById("salvarIngredientes");
+		    var abrirModal = document.getElementById("abrirModalIngredientes");
+		    var modal = document.getElementById("myModal8");
+		   const fechar = document.getElementById("fecharIngredientes");
+		if(fechar){
+		            fechar.addEventListener("click", function(event) {
+		                event.preventDefault();
+		                modal.style.display = "none";
+		            });
+		}
+		
+		    if (abrirModal && modal) {
+		        abrirModal.addEventListener("click", function() {
+		            event.preventDefault();
+		            modal.style.display = "block";
+		        });
+		
+		        var fecharModal = document.getElementById("salvarIngredientes");
+		
+		        if (fecharModal) {
+		            fecharModal.addEventListener("click", function(event) {
+		                event.preventDefault();
+		                modal.style.display = "none";
+		            });
+		        }
+		    }
+			
+			obterIngredientes();
+		    
+		    let msgError = document.getElementById("msgError");
+	    	let msgSuccess = document.getElementById("msgSuccess");
+		    document.getElementById("orderBy").addEventListener("change", function (event) {
+	            const selectedOrder = event.target.value;
+	            obterIngredientesOrdenados(selectedOrder);
+	        });
+
+		    document.getElementById("pesquisar").addEventListener("click", function() {
+		        // Chama a função de pesquisa quando o botão é clicado
+		        pesquisarItem();
+		    });
+	
+	        // Função para fazer a solicitação AJAX
+	        function obterIngredientesOrdenados(orderBy) {
+	            const url = `http://localhost:6789/ingrediente/ordenar?orderBy=${orderBy}`;
+	            console.log('URL da Requisição:', url);  
+	            console.log('Requisição enviada!');
+	            fetch(url)  
+	                .then(response => {
+	                    if (!response.ok) {
+	                        throw new Error(`HTTP error! Status: ${response.status}`);
+	                    }
+	                    return response.json();
+	                })
+	                .then(data => {
+	                    console.log('Data:', data); 
+		                const mostrarIngredientes = document.getElementById("alimentos");
+		                mostrarIngredientes.innerHTML = "";
+	    
+						if (data) {
+		                    data.forEach(ingrediente => {
+		                        const divIngrediente = document.createElement('div');
+		                        divIngrediente.id = ingrediente.id;
+		                        const h2Ingrediente = document.createElement('h2');
+		                        h2Ingrediente.textContent = ingrediente.nome;
+		
+		                        const checkboxIngrediente = document.createElement('input');
+		                        checkboxIngrediente.type = 'checkbox';
+		                        checkboxIngrediente.name = 'alimentos';
+		                        checkboxIngrediente.value = `${ingrediente.id}`;
+		                        checkboxIngrediente.classList.add('checkbox');
+		                        
+		                        const inputQuant = document.createElement('input');
+		                        inputQuant.type = 'number';
+		                        inputQuant.name = 'quantidade';
+		                        inputQuant.min = '1';
+		                        inputQuant.step = '1';
+		                        inputQuant.style.width = '35px';
+		                        inputQuant.style.height = '35px';
+		                        inputQuant.style.marginTop = '10px';
+		                        inputQuant.style.marginLeft = '130px';
+		
+		                        divIngrediente.appendChild(h2Ingrediente);
+		                        divIngrediente.appendChild(checkboxIngrediente);
+		                         divIngrediente.appendChild(inputQuant);
+		                        mostrarIngredientes.appendChild(divIngrediente);
+
+		                        divIngrediente.style.backgroundImage = `url('${ingrediente.imagem}')`;
+		                    });
+	                    } else {
+	                        console.error('Resposta inválida. A propriedade "restricao" está ausente.');
+	                    }
+	                })
+	                .catch(error => console.error('Erro ao obter restrições:', error));
+	        }
+	
+	    function pesquisarItem() {
+	        const searchTerm = document.getElementById("searchBox").value;
+	
+	        if (searchTerm.trim() === "") {
+	            alert("Por favor, insira um termo de pesquisa válido.");
+	            return;
+	        }
+	
+	        const url = `http://localhost:6789/ingrediente/pesquisar?termo=${encodeURIComponent(searchTerm)}`;
+	
+	        fetch(url)
+	            .then(response => {
+	                if (!response.ok) {
+	                    throw new Error(`Erro HTTP! Status: ${response.status}`);
+	                }
+	                return response.json();
+	            })
+                .then(data => {
+                    console.log('Data:', data); 
+		                const mostrarIngredientes = document.getElementById("alimentos");
+		                mostrarIngredientes.innerHTML = "";
+	    
+						if (data && data.length > 0) {
+		                    data.forEach(ingrediente => {
+		                        const divIngrediente = document.createElement('div');
+		                        divIngrediente.id = ingrediente.id;
+		                        const h2Ingrediente = document.createElement('h2');
+		                        h2Ingrediente.textContent = ingrediente.nome;
+		
+		                        const checkboxIngrediente = document.createElement('input');
+		                        checkboxIngrediente.type = 'checkbox';
+		                        checkboxIngrediente.name = 'alimentos';
+		                        checkboxIngrediente.value = `${ingrediente.id}`;
+		                        checkboxIngrediente.classList.add('checkbox');
+		                        
+		                        const inputQuant = document.createElement('input');
+		                        inputQuant.type = 'number';
+		                        inputQuant.name = 'quantidade';
+		                        inputQuant.min = '1';
+		                        inputQuant.step = '1';
+		                        inputQuant.style.width = '35px';
+		                        inputQuant.style.height = '35px';
+		                        inputQuant.style.marginTop = '10px';
+		                        inputQuant.style.marginLeft = '130px';
+		
+		                        divIngrediente.appendChild(h2Ingrediente);
+		                        divIngrediente.appendChild(checkboxIngrediente);
+		                         divIngrediente.appendChild(inputQuant);
+		                        mostrarIngredientes.appendChild(divIngrediente);
+
+		                        divIngrediente.style.backgroundImage = `url('${ingrediente.imagem}')`;
+		                    });
+                    } else {
+                        console.error('Resposta inválida. A propriedade "ingrediente" está ausente.');
+                        mostrarIngredientes.innerHTML += '<p class="text-center">Nenhum item corresponde à pesquisa :(</p>';
+                    }
+                })
+	            .catch(error => {
+	                console.error('Erro durante a pesquisa:', error);
+	            });
+	   		 }
+	   		 
+	   		var insertRecipe = document.getElementById('insertRecipe');
+	    	insertRecipe.addEventListener("submit", function (event) {
+	        event.preventDefault();
+	
+	        const postarReceitaURL = 'http://localhost:6789/receita/insert';
+	
+	        // Construir manualmente uma string com os dados do formulário
+	        const formData = new URLSearchParams(new FormData(insertRecipe));
+	
+	        // Adicione os dados do formulário como parâmetros de consulta à URL
+	        const urlComParametros = `${postarReceitaURL}?${formData}`;
+	
+	        // Requisição POST para inserir o usuário
+	        fetch(urlComParametros, {
+	            method: 'POST',
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            console.log(data);
+	            if (data.success) {
+	                msgSuccess.style.display = 'block';
+	                msgSuccess.innerHTML = '<strong>Receita postada com sucesso!</strong>';
+	                msgError.style.display = 'none';
+	                msgError.innerHTML = '';
+	                setTimeout(() => {
+	                    window.location.href = 'feed.html';
+	                }, 1000);
+	            } else {
+	                    msgError.style.display = 'block';
+	                    msgError.innerHTML = '<strong>Falha ao postar receita. Por favor, tente novamente.</strong>';
+	                    msgSuccess.innerHTML = '';
+	                    msgSuccess.style.display = 'none';
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Erro durante a solicitação POST:', error);
+	        });
+	    });	
+		});
+		
+					function obterIngredientes() {
+		        fetch('http://localhost:6789/ingrediente')
+		            .then(response => response.json())
+		            .then(data => {
+		                const mostrarIngredientes = document.getElementById("alimentos");
+		                mostrarIngredientes.innerHTML = "";
+						console.log(data);
+		                if (data) {
+		                    data.forEach(ingrediente => {
+		                        const divIngrediente = document.createElement('div');
+		                        divIngrediente.id = ingrediente.id;
+		                        const h2Ingrediente = document.createElement('h2');
+		                        h2Ingrediente.textContent = ingrediente.nome;
+		
+		                        const checkboxIngrediente = document.createElement('input');
+		                        checkboxIngrediente.type = 'checkbox';
+		                        checkboxIngrediente.name = 'alimentos';
+		                        checkboxIngrediente.value = `${ingrediente.id}`;
+		                        checkboxIngrediente.classList.add('checkbox');
+		                        
+		                        const inputQuant = document.createElement('input');
+		                        inputQuant.type = 'number';
+		                        inputQuant.name = 'quantidade';
+		                        inputQuant.min = '1';
+		                        inputQuant.step = '1';
+		                        inputQuant.style.width = '35px';
+		                        inputQuant.style.height = '35px';
+		                        inputQuant.style.marginTop = '10px';
+		                        inputQuant.style.marginLeft = '130px';
+		
+		                        divIngrediente.appendChild(h2Ingrediente);
+		                        divIngrediente.appendChild(checkboxIngrediente);
+		                         divIngrediente.appendChild(inputQuant);
+		                        mostrarIngredientes.appendChild(divIngrediente);
+
+		                        divIngrediente.style.backgroundImage = `url('${ingrediente.imagem}')`;
+		                    });
+		                } else {
+		                    console.error('Resposta inválida. A propriedade "ingrediente" está ausente.');
+		                }
+		            })
+		            .catch(error => console.error('Erro ao obter ingredientes:', error));
+		    }
+		
+		function carregarInstrucoes() {
+			
+		  const instructions = document.getElementById("instrucoes");
+		
+		  // Criar uma div
+		  const div = document.createElement("div");
+		  div.id = `instruction${i}`;
+		
+		  // Criar um parágrafo
+		  const paragraph = document.createElement("p");
+		  paragraph.textContent = `${i}`;
+		  paragraph.style.width = "10%";
+		  paragraph.style.backgroundColor = "#FA7D00";
+		  paragraph.style.color = "white";
+		
+		  // Criar um input
+		  const input = document.createElement("input");
+		  input.type = "text";
+		  input.className = "instrucao";
+		  input.name = "instrucao";
+		
+		  // Adicionar o parágrafo e o input à div
+		  div.appendChild(paragraph);
+		  div.appendChild(input);
+			
+		  // Adicionar a div ao elemento com o ID "instrucoes"
+		  instructions.appendChild(div);
+		  if (i < 2) {
+		    minus.style.display = "none";
+		  } else {
+		    minus.style.display = "block";
+		  }
+		  i++;
+		}
+		
+	function removerInstrucao() {
+	  const instructions = document.getElementById("instrucoes");
+	
+	  // Verificar se há elementos a serem removidos
+	  if (i > 2) {
+	    // Decrementar o contador
+	    i--;
+	
+	    // Remover a última div
+	    const lastInstruction = document.getElementById(`instruction${i}`);
+	    instructions.removeChild(lastInstruction);
+	  }
+	  
+	  if(i <= 2){
+		  minus.style.display = "none";
+	  }
+	}
+	</script>
+    <header>
+        <nav id="nav">
+          <a class="logo" href="index.html">ME GUSTA</a>
+        </nav>
+    </header>
+
+    <div class="card2">
+        <h1 class="text-center entrarCadastrar">Compartilhe sua Receita</h1>
+        <div id="msgError"></div>
+		<div id="msgSuccess"></div>
+        <form id="insertRecipe">
+			<div id="mantemID">
+				<input type="text" id="user" name="user" placeholder="" value="">
+			</div>
+            <!-- Título -->
+			<div id="divTitulo" class="label-float">
+				<label for="titulo">Título:</label>
+            	<input type="text" id="titulo" name="titulo" required minlength="10" maxlength="80">
+			</div>
+
+            <!-- Descrição -->
+			<div id="divDescricao" class="label-float">
+				<label for="descricao">Descrição:</label>
+            	<input type="text" id="descricao" name="descricao" maxlength="150">
+			</div>
+
+            <!-- Imagem -->
+            <div id="divImagem" class="label-float">
+            	<label for="imagem">Imagem:</label>
+            	<input type="file" id="imagem" name="imagem" required accept="image/*">				
+			</div>
+			
+            <!-- Dificuldade -->
+			<div id="divDificuldade" >
+				<div class="label-float">
+		            <label>Dificuldade:</label>
+		        </div>
+	            <div id="ola">
+	                <input type="radio" id="dificil" name="dificuldade" value="Difícil">
+	                <label for="dificil">Difícil</label>
+	
+	                <input type="radio" id="medio" name="dificuldade" value="Médio">
+	                <label for="media">Média</label>
+	
+	                <input type="radio" id="facil" name="dificuldade" value="Fácil">
+	                <label for="facil">Fácil</label>
+	            </div>	
+			</div>			
+			
+
+			<!-- Instrução -->
+			<div id="divInstrucao" class="label-float">
+				<div>
+					<label id="lblI" for="instrucoes">Instruções:</label>
+					<div id="instrucoes">
+					
+					</div>
+				</div>
+	
+				
+				<div id="divPM">
+					<button id="plus"><i  class="fa-solid fa-plus" style="color: #f0870f; font-size: 20px"></i></button>
+					<button id="minus"><i  class="fa-solid fa-minus" style="color: #f0870f; font-size: 20px"></i></button>
+				</div>
+				
+			</div>
+			
+			<!-- Tempo de Preparo -->
+			<div id="divTempoPreparo" class="label-float">
+            	<label for="tempoPreparo">Tempo de Preparo (minutos):</label>
+            	<input type="number" id="tempoPreparo" name="tempoPreparo" min="1" step="1" required>				
+			</div>
+			
+			<!-- Custo -->
+			<div id="divCusto" class="label-float">
+            	<label for="custo">Custo (R$):</label>
+            	<input type="number" id="custo1" name="custo" min="0.01" step="0.01" required>				
+			</div>
+			
+			<!-- Porção -->
+			<div id="divPorcao" class="label-float">
+            	<label for="porcao">Porção:</label>
+            	<input type="text" id="porcao" name="porcao" maxlength="20">				
+			</div>
+			
+			<!-- Ingredientes -->
+			<div id="divIngredientes" class="label-float">
+				 <button id="abrirModalIngredientes">Selecionar Ingredientes</button>	
+			</div>	
+					
+            <!-- Botões de ação -->
+            <div class="justify-center" id="btnPC">
+                <button id="postar" type="submit">Postar</button>
+                <button id="cancelar" type="button">Cancelar</button>
+            </div>
+            
+            <div class="modal" id="myModal8">
+				<div class="model-content8">
+					<h1 class="entrarCadastrar">Selecione os ingredientes</h1>
+					<div id="foodPresentation">
+			            <div>
+			                <select id="orderBy" name="orderBy">
+			                    <option value="">Ordenar por</option>
+			                    <option value="alfabetica">Ordem Alfabética</option>
+			                    <option value="categoria">Categoria</option>
+			                </select>
+			            </div>
+			
+			            <div>
+			                <input type="text" id="searchBox" name="searchBox" placeholder="Busque um item">
+			                <button id="pesquisar"><i class="fas fa-search fa-lg" style="color: #FA7D00;"></i></button>
+			            </div>
+			        </div>
+			
+			        <div id="alimentos">
+			
+			
+			        </div>
+			        <div class="justify-center">
+			            <button id="salvarIngredientes">Salvar</button>
+			        </div>
+		     </div>
+        </div>
+        </form>
+    </div>
+
+</body>
+
+</html>

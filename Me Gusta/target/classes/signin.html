@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/averia" type="text/css">
+    <link rel="stylesheet" href="css/estilo.css" />
+    <title>Log-in</title>
+  </head>
+  
+  <body>
+    <header>
+      <nav id="nav">
+        <a class="logo" href="index.html">ME GUSTA</a>
+      </nav>
+    </header>
+    <div id="section" class="container">
+      <div class="card">
+        <h1 class="entrarCadastrar">Entrar</h1>
+
+        <div id="msgError"></div>
+        <div id="msgSuccess"></div>
+
+		<form id="loginForm">
+			<div class="label-float">
+	          <input type="text" id="usuario" name="user" paceholder="" required />
+	          <label id="userLabel" for="usuario">Usuário</label>
+	        </div>
+	
+	        <div class="label-float">
+	          <input type="password" id="senha" name="senha" paceholder="" required />
+	          <label id="senhaLabel" for="senha">Senha</label>
+	         
+	        </div>
+	
+	        <div class="justify-center">
+	          <button type="submit" id="entrar">Entrar</button>
+	        </div>
+		</form>
+
+        <p class="centered">Não tem uma conta?&nbsp<a id="cadastro" href="signup.html">  Cadastre-se</a></p>
+      </div>
+    </div>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", (event) => {
+	    let msgError = document.getElementById("msgError");
+	    let msgSuccess = document.getElementById("msgSuccess");
+	
+	    var form = document.getElementById('loginForm');
+	    form.addEventListener("submit", function (event) {
+	        event.preventDefault();
+	
+	        const autenticarUsuarioURL = 'http://localhost:6789/usuario/autenticar';
+	
+	        // Construir manualmente uma string com os dados do formulário
+	        const formData = new URLSearchParams(new FormData(form));
+	
+	        // Adicione os dados do formulário como parâmetros de consulta à URL
+	        const urlComParametros = `${autenticarUsuarioURL}?${formData}`;
+	
+	        // Requisição POST para inserir o usuário
+	        fetch(urlComParametros, {
+	            method: 'GET',
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            console.log(data);
+	            if (data.success) {
+	                msgSuccess.style.display = 'block';
+	                msgSuccess.innerHTML = '<strong>Olá. É bom ter você de volta!</strong>';
+	                msgError.style.display = 'none';
+	                msgError.innerHTML = '';
+	                
+	                // Armazena o nome de usuário na sessionStorage
+        			sessionStorage.setItem('username', data.object.usuario);
+        			sessionStorage.setItem('user', JSON.stringify(data.object));
+        			
+					if(data.info){
+						setTimeout(() => {
+	                    	window.location.href = 'perfil.html?id=${data.object.id}';
+	                	}, 1000);
+					} else {
+						setTimeout(() => {
+	                    	window.location.href = 'sobreVoce.html';
+	                	}, 1000);						
+					}
+	                
+	                // Limpar os campos do formulário
+	                form.reset();
+	            } else {
+                    msgError.style.display = 'block';
+                    msgError.innerHTML = '<strong>Usuário ou senha incorretos.</strong>';
+                    msgSuccess.innerHTML = '';
+                    msgSuccess.style.display = 'none';
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Erro durante a solicitação POST:', error);
+	        });
+	    });
+	});
+	</script>
+  </body>
+</html> 

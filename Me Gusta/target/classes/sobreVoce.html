@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/averia" type="text/css">
+    <link rel="stylesheet" href="css/estilo.css" />
+    <title>Sobre você</title>
+  </head>
+  <body>
+	<script>
+		document.addEventListener("DOMContentLoaded", (event) => {
+			// Recuperao nome de usuário da sessionStorage
+    		const username = sessionStorage.getItem('username');
+
+		    // Define o valor com o nome de usuário
+		    document.getElementById('user').value = username;
+		    
+		   obterRestricoes(); 
+	       function obterRestricoes() {
+	            fetch('http://localhost:6789/restricao')  
+	                .then(response => response.json())
+	                .then(data => {
+	                    console.log('Data oooi:', data); 
+	                    const mostrarDr = document.getElementById("dr");
+	                    mostrarDr.innerHTML = "";
+	                    const mostrarCds = document.getElementById("cds");
+	                    mostrarCds.innerHTML = "";
+						const mostrarEdv = document.getElementById("edv");
+						mostrarEdv.innerHTML = "";								
+	                    if (data) {
+	                        data.forEach(restricao => {
+								if(restricao.tipo == "Estilo de Vida"){
+		                            mostrarEdv.innerHTML += `
+		                             <div>
+										 <input type="checkbox" for="restricao${restricao.nome}" name="restrictions" value="${restricao.id}">
+	               						 <label for="restricao${restricao.nome}">${restricao.nome}</label>
+	               					</div>`;
+								} else if (restricao.tipo == "Condição de Saúde"){
+		                            mostrarCds.innerHTML += `
+		                             <div>
+										 <input type="checkbox" for="restricao${restricao.nome}"  name="restrictions" value="${restricao.id}">
+	               						 <label for="restricao${restricao.nome}"">${restricao.nome}</label>
+	               					</div>`;									
+								} else {
+		                            mostrarDr.innerHTML += `
+		                             <div>
+										 <input type="checkbox" id="restricao${restricao.nome}" name="restrictions" value="${restricao.id}">
+	               						 <label for="restricao${restricao.nome}">${restricao.nome}</label>
+	               					</div>`;										
+								}
+	                        });
+	                    } else {
+	                        console.error('Resposta inválida. A propriedade "restricao" está ausente.');
+	                    }
+	                })
+	                .catch(error => console.error('Erro ao obter restrições:', error));
+	        }
+	        
+	        let msgError = document.getElementById("msgError");
+	    	let msgSuccess = document.getElementById("msgSuccess");
+	    	
+	        var minhasRestricoes = document.getElementById('minhasRestricoes');
+	    	minhasRestricoes.addEventListener("submit", function (event) {
+	        event.preventDefault();
+	
+	        const inserirMinhasRestricoesURL = 'http://localhost:6789/restricoesuser/insert';
+	
+	        // Construir manualmente uma string com os dados do formulário
+	        const formData = new URLSearchParams(new FormData(minhasRestricoes));
+	
+	        // Adicione os dados do formulário como parâmetros de consulta à URL
+	        const urlComParametros = `${inserirMinhasRestricoesURL}?${formData}`;
+	
+	        // Requisição POST para inserir o usuário
+	        fetch(urlComParametros, {
+	            method: 'POST',
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            console.log(data);
+	            if (data.success) {
+	                msgSuccess.style.display = 'block';
+	                msgSuccess.innerHTML = '<strong>Restrições salvas com sucesso!</strong>';
+	                msgError.style.display = 'none';
+	                msgError.innerHTML = '';
+	                setTimeout(() => {
+	                    window.location.href = 'foodForm.html';
+	                }, 1000);
+	            } else {
+	                    msgError.style.display = 'block';
+	                    msgError.innerHTML = '<strong>Falha ao salvar restrições. Por favor, tente novamente.</strong>';
+	                    msgSuccess.innerHTML = '';
+	                    msgSuccess.style.display = 'none';
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Erro durante a solicitação POST:', error);
+	        });
+	    });	
+	  });	
+	</script>
+    <header>
+      <nav id="nav">
+        <a class="logo" href="index.html">ME GUSTA</a>
+      </nav>
+    </header>
+    <div class="container1">
+      <div class="card1">
+			<h1 class="entrarCadastrar" id="sobreVoce">Sobre você</h1>
+	        <p id="marque">Marque as opções adequadas para nos ajudar a personalizar o seu contéudo</p>
+	        
+	        <div id="msgError"></div>
+			<div id="msgSuccess"></div>
+	
+		    <ul id="navR">
+	          <li>ESTILO DE VIDA</li>
+	          <li>CONDIÇÃO DE SAÚDE</li>
+	          <li>DEMAIS RETRIÇÕES</li>
+	        </ul>
+	        
+	        <form id="minhasRestricoes">
+	       	<div id="restrictions">
+			  	<div id="edv">
+			  	</div>
+		  			  
+			    <div id="cds">						  
+		  	    </div>
+
+			    <div id="dr">
+			    </div>		
+			</div>
+			<div id="mantemID">
+				<input type="text" id="user" name="user" placeholder="" value="">
+			</div>	
+			<div class="justify-center">
+	          <button id="salvarMinhasRestricoes">Salvar</button>
+	        </div>
+	        <p class="centered">Clique aqui para&nbsp<a id="cadastro">responder depois</a></p>
+			</form>
+      </div>
+      
+    </div>
+  </body>
+</html>

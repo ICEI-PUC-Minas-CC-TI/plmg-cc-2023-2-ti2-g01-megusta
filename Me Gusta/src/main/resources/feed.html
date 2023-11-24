@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/averia" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/estilo.css">
+    <title>Feed de Receitas</title>
+</head>
+<body>
+	<script>
+		document.addEventListener("DOMContentLoaded", (event) => {
+			var userString = sessionStorage.getItem('user');
+			var user = JSON.parse(userString);
+			carregarReceitas(user.id);
+		});	
+		
+		function carregarReceitas(usuario) {
+		    fetch(`http://localhost:6789/receita?userId=${usuario}`)
+		        .then(response => response.json())
+		        .then(data => {
+		            const mostrar = document.getElementById("recipes");
+		            mostrar.innerHTML = "";
+		            console.log("Data:", data);
+		            if (data) {
+		                data.forEach(receita => {
+		                    const recipeElement = document.createElement("div");
+		                    recipeElement.classList.add("recipe");
+		                    recipeElement.id = receita.id;
+		
+		                    recipeElement.innerHTML = `
+		                        <div class="infos">
+		                            <div>
+		                                <h4><b>${receita.titulo}</b></h4>
+		                            </div>
+		                            <div class="rdcc">
+		                                <button class="info">${receita.avaliacao} <i class="fa-solid fa-star"></i></button>
+		                                <button class="info">${receita.dificuldade}</button>
+		                                <button class="info">${receita.nutritionalinfo.calorias} kcal</button>
+		                                <button class="info">R$ ${receita.custo}</button>
+		                            </div>
+		                        </div>
+		                    `;
+		
+		                    recipeElement.addEventListener("click", () => {
+		                        // Redirect to receita.html with the recipe ID as a query parameter
+		                        window.location.href = `receita.html?id=${receita.id}`;
+		                    });
+		
+		                    mostrar.appendChild(recipeElement);
+		                });
+		            } else {
+		                console.error('Resposta inválida. A propriedade "receita" está ausente.');
+		            }
+		        })
+		        .catch(error => console.error('Erro ao obter receitas:', error));
+		}
+
+	</script>
+    <header>
+        <nav id="nav">
+          <a class="logo" href="index.html">ME GUSTA</a>
+          <div class="mobile-menu dark">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+          </div>
+          <ul class="nav-list">
+            <li><a onclick="testeLogin2()">FEED</a></li>
+            <li><a onclick="testeLogin1()">MEU PERFIL</a></li>
+            <li><a onclick="testeLogin()">POSTAR</a></li>
+          </ul>
+        </nav>
+      </header>
+      
+    <section id="section" class="centralizar">
+        <div class="topo">
+           <h1 class="text-center">Feed de Receitas</h1>
+            
+            <button id="abrirModal" >FILTRAR</button>
+            <div class="modal" id="myModal">
+                <div class="model-content">
+                <h3>Filtrar por</h3>
+                <button id="review">Melhor avaliada para pior avaliada</button>
+                <button id="dificuldade">Mais fácil para mais difícil</button>
+                <button id="calorias">Menos calórica para mais calórica</button>
+                <button id="custo">Mais barata para mais cara</button>
+                <button id="fecharModal" >SALVAR</button>
+                </div>
+            </div>
+          </div>
+       
+            <div id="recipes">
+
+
+            </div>
+
+
+        <div id="tela"></div>
+    </section>
+
+        <footer>
+            <ul class="foot-list">
+                <li>OUTRAS PÁGINAS</li>
+                <li><a href="sobrenos.html">Sobre Nós</a></li>
+                <li><a href="https://www.pucminas.br/destaques/Paginas/default.aspx">Portal PUC Minas</a></li>
+            </ul>
+
+              <img id="puc" src="images/logopuc.png" alt="Não foi possível carregar a imagem.">
+        </footer>
+
+    <script src="js/roteiro.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/testes.js"></script>
+    
+</body>
+</html>

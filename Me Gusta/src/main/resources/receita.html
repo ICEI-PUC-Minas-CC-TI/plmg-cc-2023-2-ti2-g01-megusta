@@ -1,0 +1,386 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/averia" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/estilo.css">
+    <title>Receita</title>
+</head>
+<body>
+    <header>
+        <nav id="nav">
+          <a class="logo" href="index.html">ME GUSTA</a>
+          <div class="mobile-menu dark">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+          </div>
+          <ul class="nav-list">
+            <li><a onclick="testeLogin2()">FEED</a></li>
+          <li><a onclick="testeLogin1()">MEU PERFIL</a></li>
+          <li class="isAuthor"><a id="editarReceita">EDITAR</a></li>
+          <li  class="isAuthor"><a id="deletarReceita">DELETAR</a></li>
+          </ul>
+        </nav>
+      </header>
+
+	<section>
+		<div class="container-fluid" id="geral">
+        <div id="conteudo">
+			<div class="none">
+				<input type="text" id="autor" name="autor" placeholder="" value="" required />
+			</div>				 
+			<h2 id="aprTitulo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis.</h2>
+			<div id="aprInfo">
+	            <div class="rdcc">
+                    <button id="aprPorcao" class="info">Porção</button>
+                    <button id="aprAvaliacao" class="info">Avaliação <i class="fa-solid fa-star"></i></button>
+                    <button id="aprDificuldade" class="info">Dificuldade</button>
+                    <button id="aprCusto" class="info">R$ Custo</button>
+                </div>
+			</div>
+		    <div class="centro">
+            	<img id="aprImagem" class="fotos" src="" alt="Não foi possível carregar a imagem."> 
+            </div>
+          
+			<div id="aprDescricao">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc aliquet mauris ac facilisis aliquam. Duis sit amet ligula facilisis, tincidunt lectus in, consequat libero. Curabitur.
+			</div>
+			
+			<h3>Instruções</h3>
+			<div id="aprInstrucoes">
+				<div class="aprInst">
+					<div class="instCount">1</div>
+					<p class="inst"> Morbi et ante mi. Nulla sed pellentesque nibh.</p>
+				</div>
+				<div class="aprInst">
+					<div class="instCount">2</div>
+					<p class="inst"> Cras sed mauris iaculis, rutrum sem ac, commodo sapien. Phasellus sit amet magna non elit dignissim volutpat.</p>
+				</div>				
+				<!--Criação dos elementos dinamicamente aqui-->
+			</div>
+			
+			<h5><b>Informação nutricional</b></h5>
+			<div id="aprNutriInfo">
+				<table>
+		            <tr>
+		                <th>Tipo</th>
+		                <th>Quantidade</th>
+		            </tr>
+		            <tr>
+		                <td>Calorias</td>
+		                <td id="tableCalorias">00 g</td>
+		            </tr>
+		            <tr>
+		                <td>Carboidratos</td>
+		                <td id="tableCarboidratos">00 g</td>
+		            </tr>		            
+		            <tr>
+		                <td>Proteínas</td>
+		                <td id="tableProteinas">00 g</td>
+		            </tr>
+		            <tr>
+		                <td>Gorduras Saturadas</td>
+		                <td id="tableGSaturadas">00 g</td>
+		            </tr>		            
+		            <tr>
+		                <td>Gorduras Trans</td>
+		                <td id="tableGTrans">00 g</td>
+		            </tr>	
+		            <tr>
+		                <td>Fibra</td>
+		                <td id="tableFibra">00 g</td>
+		            </tr>		            		            		            
+		            <tr>
+		                <td>Sódio</td>
+		                <td id="tableSodio">00 g</td>
+		            </tr>
+
+		        </table>
+			</div>
+        </div>
+    </div>
+    
+    <div class="modal" id="modalReview">
+		<div class="model-content4">
+			<h1 class="entrarCadastrar">Avaliar receita</h1>
+			<p id="marque">Conte-nos o que achou. Dê uma nota de 1 a 10 para essa receita!</p>
+			<div id="msgError"></div>
+			<div id="msgSuccess"></div>
+			<form id="formReview">
+				<div class="none">
+					<input type="text" id="id" name="id" placeholder="" value="" required />
+				 </div>
+				<div class="none">
+					<input type="text" id="user" name="user" placeholder="" value="" required />
+				 </div>				 
+				<div class="rating" id="recipeRating">
+				    <span class="star" data-value="1">&#9733;</span>
+				    <span class="star" data-value="2">&#9733;</span>
+				    <span class="star" data-value="3">&#9733;</span>
+				    <span class="star" data-value="4">&#9733;</span>
+				    <span class="star" data-value="5">&#9733;</span>
+				    <span class="star" data-value="6">&#9733;</span>
+				    <span class="star" data-value="7">&#9733;</span>
+				    <span class="star" data-value="8">&#9733;</span>
+				    <span class="star" data-value="9">&#9733;</span>
+				    <span class="star" data-value="10">&#9733;</span>			    
+				</div>
+				<input id="avaliacao" name="avaliacao" value="" class="none">
+				<div class="justify-center">
+	            	<button id="avaliar">Avaliar</button>
+	            	<button id="fecharModalReview">Cancelar</button>
+	          	</div>
+			</form>
+		</div>
+	</div>
+	<div class="justify-right" id="btnAvaliar">
+            <button id="abrirModalReview">Avaliar</button>
+            <button id="salvarReceita">Salvar</button>
+            <div id="msgError1"></div>
+			<div id="msgSuccess1"></div>
+    </div>
+	</section>
+
+    <footer>
+        <ul class="foot-list">
+            <li>OUTRAS PÁGINAS</li>
+            <li><a href="sobrenos.html">Sobre Nós</a></li>
+            <li><a href="https://www.pucminas.br/destaques/Paginas/default.aspx">Portal PUC Minas</a></li>
+        </ul>
+
+          <img id="puc" src="images/logopuc.png" alt="Não foi possível carregar a imagem.">
+    </footer>
+
+	<script src="js/roteiro.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/testes.js"></script>
+    <script>
+		document.addEventListener('DOMContentLoaded', function () {
+			// Obtém o ID da query parameter da URL
+			const urlParams = new URLSearchParams(window.location.search);
+			const receitaId = urlParams.get('id');
+			document.getElementById('id').value = receitaId;
+			          const editarReceita = document.getElementById("editarReceita");
+          const deletarReceita = document.getElementById("deletarReceita");
+          
+          editarReceita.addEventListener("click", function () {
+	
+		    const urlEditarReceita = `editarReceita.html?id=${receitaId}`;
+		
+		    window.location.href = urlEditarReceita;
+		});
+			var userString = sessionStorage.getItem('user');
+			var usuario = JSON.parse(userString);
+			document.getElementById('user').value = usuario.id;
+			const titulo = document.getElementById('aprTitulo');
+			titulo.innerHTML = "";
+			const descricao = document.getElementById('aprDescricao');
+			descricao.innerHTML = "";
+			const porcao = document.getElementById('aprPorcao');
+			porcao.innerHTML = "";	
+			const avaliacao = document.getElementById('aprAvaliacao');
+			avaliacao.innerHTML = "";	
+			const dificuldade = document.getElementById('aprDificuldade');
+			dificuldade.innerHTML = "";
+			const custo = document.getElementById('aprCusto');
+			custo.innerHTML = "";	
+			const img = document.getElementById('aprImagem');
+			img.src = "";							
+			let instrucoes = document.getElementById('aprInstrucoes');	
+			instrucoes.innerHTML = "";  // Use innerHTML para limpar o conteúdo existente												
+			const calorie = document.getElementById('tableCalorias');
+            const carb = document.getElementById('tableCarboidratos');
+            const prot = document.getElementById('tableProteinas');
+            const sat = document.getElementById('tableGSaturadas');
+            const trans = document.getElementById('tableGTrans');
+            const fibra = document.getElementById('tableFibra');
+            const sodio = document.getElementById('tableSodio');
+            const autorV = document.getElementById('autor');
+			calorie.innerHTML = "";
+			carb.innerHTML = "";
+			prot.innerHTML = "";
+			sat.innerHTML = "";
+			trans.innerHTML = "";
+			fibra.innerHTML = "";
+			sodio.innerHTML = "";
+			// Verifica se o ID foi passado e é válido
+			if (receitaId) {
+				console.log('TÔ aqui');
+			    fetch(`http://localhost:6789/buscarReceita?receitaId=${receitaId}`)
+			        .then(response => response.json())
+			        .then(data => {
+			            console.log("Detalhes da Receita:", data);
+			            autorV.value = data.object.usuario_id;
+			            titulo.innerHTML += `${data.object.titulo}`;
+			            descricao.innerHTML += `${data.object.descricao}`;
+			            porcao.innerHTML += `${data.object.porcao}`;
+			            img.src = `${data.object.imagem}`;
+			            avaliacao.innerHTML += `${data.object.avaliacao} <i class="fa-solid fa-star"></i>`;
+			            custo.innerHTML += `R$ ${data.object.custo}`;
+			            dificuldade.innerHTML += `${data.object.dificuldade}`;
+			            
+			            for (var i = 1; i <= data.object.instrucao.length; i++) {
+			                instrucoes.innerHTML += `
+			                    <div class="aprInst">
+			                        <div class="instCount">${i}</div>
+			                        <p class="inst">${data.object.instrucao[i - 1]}</p>
+			                    </div>`;
+			            }
+			            calorie.innerHTML += `${data.object.nutritionalinfo.calorias} g`;
+			            carb.innerHTML += `${data.object.nutritionalinfo.carboidratos} g`;
+			            prot.innerHTML += `${data.object.nutritionalinfo.proteinas} g`;
+			           	sat.innerHTML += `${data.object.nutritionalinfo.gorduraSaturada} g`;
+			           	trans.innerHTML += `${data.object.nutritionalinfo.gorduraTrans} g`;
+			            fibra.innerHTML += `${data.object.nutritionalinfo.fibra} g`;
+			            sodio.innerHTML += `${data.object.nutritionalinfo.sodio} g`;
+			            
+			                console.log('Usuario:', usuario.id);
+    console.log('Autor valor:', autorV.value);
+
+    if (usuario.id === autorV.value) {
+        
+        const isAuthorElements = document.getElementsByClassName("isAuthor");
+        
+        for (let i = 0; i < isAuthorElements.length; i++) {
+            isAuthorElements[i].style.display = 'block';
+        }
+    }
+			        })
+			        .catch(error => console.error('Erro ao obter detalhes da receita:', error));
+			} else {
+			    console.error('ID da receita não encontrado na URL.');
+			}
+			const abrirModalReview = document.getElementById('abrirModalReview');
+			const fecharModalReview = document.getElementById('fecharModalReview');
+			const modalReview = document.getElementById('modalReview');
+			
+			abrirModalReview.addEventListener('click', function(){
+				modalReview.style.display = 'block';
+			});
+			
+			if(fecharModalReview){
+				fecharModalReview.addEventListener('click', function(){
+					event.preventDefault();
+					modalReview.style.display = 'none';
+				});
+			}
+         
+					
+const stars = document.querySelectorAll('.star');
+const ratingValue = document.getElementById('avaliacao');
+let isClicked = false;
+let currentRating = 0;
+
+stars.forEach(function (star, index) {
+    star.addEventListener('mouseover', function () {
+        resetStars();
+        highlightStars(index + 1);
+    });
+
+    star.addEventListener('click', function () {
+        isClicked = true;
+        currentRating = index + 1;
+        resetStars();
+        highlightStars(index + 1);
+    });
+});
+
+function resetStars() {
+    stars.forEach(function (star, index) {
+        star.classList.remove('active');
+    });
+}
+
+function highlightStars(value) {
+    for (let i = 0; i < value; i++) {
+        stars[i].classList.add('active');
+    }
+    ratingValue.value = value;
+}
+		    let msgError = document.getElementById("msgError");
+	    	let msgSuccess = document.getElementById("msgSuccess");
+	    	let msgError1 = document.getElementById("msgError1");
+	    	let msgSuccess1 = document.getElementById("msgSuccess1");
+	    	
+		    	const formReview = document.getElementById('formReview');
+				formReview.addEventListener('submit', function (event) {
+			    event.preventDefault();
+			
+			    const reviewURL = 'http://localhost:6789/review/insert';
+		
+		        // Construir manualmente uma string com os dados do formulário
+		        const formData = new URLSearchParams(new FormData(formReview));
+		        
+		        const urlComParametros = `${reviewURL}?${formData}`;
+		        
+			   fetch(urlComParametros, {
+	            	method: 'POST',
+	        	})
+			    .then(response => response.json())
+			    .then(data => {
+	            if (data.success) {
+	                msgSuccess.style.display = 'block';
+	                msgSuccess.innerHTML = '<strong>Receita avaliada com sucesso!</strong>';
+	                msgError.style.display = 'none';
+	                msgError.innerHTML = '';
+	                
+	            } else {
+                    msgError.style.display = 'block';
+                    msgError.innerHTML = '<strong>Houve um erro inesperado. Tente novamente em alguns minutos.</strong>';
+                    msgSuccess.innerHTML = '';
+                    msgSuccess.style.display = 'none';
+	            }
+			    })
+			    .catch(error => {
+			        console.error('Error inserting review:', error);
+			    });
+			});
+			
+			const save = document.getElementById('salvarReceita');
+			save.addEventListener('click', function (event) {
+			    event.preventDefault();
+			
+			 	
+			    const autor = document.getElementById('autor').value; 
+			    const receita = urlParams.get('id'); 
+			
+ 				const saveURL = `http://localhost:6789/receita/save/?autor=${autor}&receita=${receita}`;
+		        
+			   fetch(saveURL, {
+	            	method: 'POST',
+	        	})
+			    .then(response => response.json())
+			    .then(data => {
+			        if (data.success) {
+			            msgSuccess1.style.display = 'block';
+			            msgSuccess1.innerHTML = '<strong>Receita salva com sucesso!</strong>';
+			            msgError1.style.display = 'none';
+			            msgError1.innerHTML = '';
+			        } else {
+						if(data.isSalva){
+							 msgError1.style.display = 'block';
+				            msgError1.innerHTML = '<strong>Receita já salva.</strong>';
+				            msgSuccess1.innerHTML = '';
+				            msgSuccess1.style.display = 'none';
+						} else {
+							msgError1.style.display = 'block';
+				            msgError1.innerHTML = '<strong>Erro ao salvar receita.</strong>';
+				            msgSuccess1.innerHTML = '';
+				            msgSuccess1.style.display = 'none';
+						}
+			        }
+			    })
+			    .catch(error => {
+			        console.error('Error saving recipe:', error);
+			    });
+			});
+		
+		});
+	</script>
+</body>
+</html>

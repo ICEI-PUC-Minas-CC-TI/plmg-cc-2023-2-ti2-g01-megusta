@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/averia" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/estilo.css" />
+
+    <title>Formulário de Alimentos</title>
+  </head>
+  <body>
+	<script>
+		document.addEventListener("DOMContentLoaded", (event) => {
+		    // Recupera o nome de usuário da sessionStorage
+		    const username = sessionStorage.getItem('username');
+		
+		    // Define o valor com o nome de usuário
+		    document.getElementById('user').value = username;
+		    obterIngredientes();
+		
+		    function obterIngredientes() {
+		        fetch('http://localhost:6789/ingrediente')
+		            .then(response => response.json())
+		            .then(data => {
+		                const mostrarIngredientes = document.getElementById("alimentos");
+		                mostrarIngredientes.innerHTML = "";
+		
+		                if (data) {
+		                    data.forEach(ingrediente => {
+		                        const divIngrediente = document.createElement('div');
+		                        divIngrediente.id = ingrediente.id;
+		
+		                        const h2Ingrediente = document.createElement('h2');
+		                        h2Ingrediente.textContent = ingrediente.nome;
+		
+		                        const checkboxIngrediente = document.createElement('input');
+		                        checkboxIngrediente.type = 'checkbox';
+		                        checkboxIngrediente.name = 'alimentos';
+		                        checkboxIngrediente.value = `${ingrediente.id}`;
+		                        checkboxIngrediente.classList.add('checkbox');
+		
+		                        divIngrediente.appendChild(h2Ingrediente);
+		                        divIngrediente.appendChild(checkboxIngrediente);
+		                        mostrarIngredientes.appendChild(divIngrediente);
+
+		                        divIngrediente.style.backgroundImage = `url('${ingrediente.imagem}')`;
+		                    });
+		                } else {
+		                    console.error('Resposta inválida. A propriedade "ingrediente" está ausente.');
+		                }
+		            })
+		            .catch(error => console.error('Erro ao obter ingredientes:', error));
+		    }
+		    
+	        let msgError = document.getElementById("msgError");
+	    	let msgSuccess = document.getElementById("msgSuccess");
+	    	let msgProgress = document.getElementById("msgProgress");				
+	    	    
+			 // Função para salvar o progresso no Local Storage
+	        function salvarProgresso() {
+	          const alimentosBanidos = document.querySelectorAll('.checkbox:checked');
+	          const progresso = [];
+	
+	          alimentosBanidos.forEach(alimento => {
+	            progresso.push(alimento.parentNode.id);
+	          });
+	
+	          // Salvar no Local Storage
+	          localStorage.setItem('progressoFormularioX', JSON.stringify(progresso));
+	        }
+	
+	        // Evento de clique no botão "Terminar mais tarde"
+	        document.getElementById('terminarMaisTarde').addEventListener('click', () => {
+				event.preventDefault();
+	          salvarProgresso();
+	            msgProgress.style.display = 'block';
+	            msgProgress.innerHTML = '<strong>Progresso salvo com sucesso! Não se esqueça de completar o formulário mais tarde.</strong>';
+	            msgSuccess.style.display = 'none';
+	            msgSuccess.innerHTML = '';
+	            msgError.style.display = 'none';
+	            msgError.innerHTML = '';
+	            setTimeout(() => {
+	                    window.location.href = 'perfil.html';
+	             }, 1000);
+	        });
+	        
+	        var meusIngredientesX = document.getElementById('meusIngredientesX');
+	    	meusIngredientesX.addEventListener("submit", function (event) {
+	        event.preventDefault();
+	
+	        const inserirMeusIngredientesXURL = 'http://localhost:6789/banidos/insert';
+	
+	        // Construir manualmente uma string com os dados do formulário
+	        const formData = new URLSearchParams(new FormData(meusIngredientesX));
+	
+	        // Adicione os dados do formulário como parâmetros de consulta à URL
+	        const urlComParametros = `${inserirMeusIngredientesXURL}?${formData}`;
+	
+	        // Requisição POST para inserir o usuário
+	        fetch(urlComParametros, {
+	            method: 'POST',
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            console.log(data);
+	            if (data.success) {
+	                msgSuccess.style.display = 'block';
+	                msgSuccess.innerHTML = '<strong>Ingredientes não desejados salvos com sucesso!</strong>';
+	                msgError.style.display = 'none';
+	                msgError.innerHTML = '';
+	                setTimeout(() => {
+	                    window.location.href = 'perfil.html';
+	                }, 1000);
+	            } else {
+	                    msgError.style.display = 'block';
+	                    msgError.innerHTML = '<strong>Falha ao salvar ingredientes não desejados. Por favor, tente novamente.</strong>';
+	                    msgSuccess.innerHTML = '';
+	                    msgSuccess.style.display = 'none';
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Erro durante a solicitação POST:', error);
+	        });
+	    });	
+	    	        document.getElementById("orderBy").addEventListener("change", function (event) {
+	            const selectedOrder = event.target.value;
+	            obterIngredientesOrdenados(selectedOrder);
+	        });
+
+		    document.getElementById("pesquisar").addEventListener("click", function() {
+		        // Chama a função de pesquisa quando o botão é clicado
+		        pesquisarItem();
+		    });
+	
+	        // Função para fazer a solicitação AJAX
+	        function obterIngredientesOrdenados(orderBy) {
+	            const url = `http://localhost:6789/ingrediente/ordenar?orderBy=${orderBy}`;
+	            console.log('URL da Requisição:', url);  
+	            console.log('Requisição enviada!');
+	            fetch(url)  
+	                .then(response => {
+	                    if (!response.ok) {
+	                        throw new Error(`HTTP error! Status: ${response.status}`);
+	                    }
+	                    return response.json();
+	                })
+	                .then(data => {
+	                    console.log('Data:', data); 
+		                const mostrarIngredientes = document.getElementById("alimentos");
+		                mostrarIngredientes.innerHTML = "";
+	    
+						if (data) {
+		                    data.forEach(ingrediente => {
+		                        const divIngrediente = document.createElement('div');
+		                        divIngrediente.id = ingrediente.id;
+		
+		                        const h2Ingrediente = document.createElement('h2');
+		                        h2Ingrediente.textContent = ingrediente.nome;
+		
+		                        const checkboxIngrediente = document.createElement('input');
+		                        checkboxIngrediente.type = 'checkbox';
+		                        checkboxIngrediente.value = 'ingrediente.id';
+		                        checkboxIngrediente.classList.add('checkbox');
+		
+		                        divIngrediente.appendChild(h2Ingrediente);
+		                        divIngrediente.appendChild(checkboxIngrediente);
+		                        mostrarIngredientes.appendChild(divIngrediente);
+		
+		                        divIngrediente.style.backgroundImage = `url('${ingrediente.imagem}')`;
+		                    });
+	                    } else {
+	                        console.error('Resposta inválida. A propriedade "restricao" está ausente.');
+	                    }
+	                })
+	                .catch(error => console.error('Erro ao obter restrições:', error));
+	        }
+	
+	    function pesquisarItem() {
+	        const searchTerm = document.getElementById("searchBox").value;
+	
+	        if (searchTerm.trim() === "") {
+	            alert("Por favor, insira um termo de pesquisa válido.");
+	            return;
+	        }
+	
+	        const url = `http://localhost:6789/ingrediente/pesquisar?termo=${encodeURIComponent(searchTerm)}`;
+	
+	        fetch(url)
+	            .then(response => {
+	                if (!response.ok) {
+	                    throw new Error(`Erro HTTP! Status: ${response.status}`);
+	                }
+	                return response.json();
+	            })
+                .then(data => {
+                    console.log('Data:', data); 
+		                const mostrarIngredientes = document.getElementById("alimentos");
+		                mostrarIngredientes.innerHTML = "";
+	    
+						if (data && data.length > 0) {
+		                    data.forEach(ingrediente => {
+		                        const divIngrediente = document.createElement('div');
+		                        divIngrediente.id = ingrediente.id;
+		
+		                        const h2Ingrediente = document.createElement('h2');
+		                        h2Ingrediente.textContent = ingrediente.nome;
+		
+		                        const checkboxIngrediente = document.createElement('input');
+		                        checkboxIngrediente.type = 'checkbox';
+		                        checkboxIngrediente.value = 'ingrediente.id';
+		                        checkboxIngrediente.classList.add('checkbox');
+		
+		                        divIngrediente.appendChild(h2Ingrediente);
+		                        divIngrediente.appendChild(checkboxIngrediente);
+		                        mostrarIngredientes.appendChild(divIngrediente);
+		
+		                        divIngrediente.style.backgroundImage = `url('${ingrediente.imagem}')`;
+		                    });
+                    } else {
+                        console.error('Resposta inválida. A propriedade "ingrediente" está ausente.');
+                        mostrarIngredientes.innerHTML += '<p class="text-center">Nenhum item corresponde à pesquisa :(</p>';
+                    }
+                })
+	            .catch(error => {
+	                console.error('Erro durante a pesquisa:', error);
+	            });
+	   		 }
+		});
+	</script>
+    <header>
+      <nav id="nav">
+        <a class="logo" href="index.html">ME GUSTA</a>
+      </nav>
+    </header>
+    <div id="section" class="container">
+      <div class="card foodForm">
+        <h1 class="entrarCadastrar">Selecione os alimentos que deseja banir</h1>
+		<div id="msgError"></div>
+		<div id="msgSuccess"></div>
+		<div id="msgProgress"></div>
+        
+		<form id="meusIngredientesX">
+		<div id="foodPresentation">
+            <div>
+                <select id="orderBy" name="orderBy">
+                    <option value="">Ordenar por</option>
+                    <option value="alfabetica">Ordem Alfabética</option>
+                    <option value="categoria">Categoria</option>
+                </select>
+            </div>
+
+            <div>
+                <input type="text" id="searchBox" name="searchBox" placeholder="Busque um item">
+                <button id="pesquisar"><i class="fas fa-search fa-lg" style="color: #FA7D00;"></i></button>
+            </div>
+        </div>
+
+        <div id="alimentos">
+
+
+        </div>
+		<div id="mantemID">
+				<input type="text" id="user" name="user" placeholder="" value="">
+		</div>	
+        <div class="justify-center">
+            <button id="salvarFoodX">Salvar</button>
+            <button id="terminarMaisTarde">Terminar mais tarde</button>
+        </div>
+     </form>
+        <div class="justify-center">
+          <hr />
+        </div>
+        <p class="centered">Você pode alterar suas respostas a qualquer momento.&nbsp</p>
+      </div>
+    </div>
+  </body>
+</html>  

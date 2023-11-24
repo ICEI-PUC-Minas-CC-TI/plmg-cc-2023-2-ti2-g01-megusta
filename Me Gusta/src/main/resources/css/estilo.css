@@ -1,0 +1,1416 @@
+                     /*-----------------------
+                                                    REGRAS PADRÃO
+                        
+                                                                        ------------------------*/
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'AveriaRegular';
+}
+
+body{
+    background-color: #dadada;
+    overflow-x: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+section{
+    background-color: aliceblue;
+    max-width: 1200px;
+    min-width: 280px;
+    padding: 30px;
+    margin: 0px auto;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+h1{
+    color: #000000;
+    font-size: 200%;
+}    
+
+h1, h3{
+	margin-left: 15px;
+}
+
+#subtitulo{
+	margin-left: 15px;
+    font-size: 25px;
+    text-align: justify;
+    padding: 5px;
+}
+
+p{
+	margin-left: 15px;
+    font-size: 20px;
+    text-align: justify;
+    padding: 5px;
+}
+
+.centro{
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    text-align: center;
+}
+
+.fotos{
+    max-width: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    margin: 0px;
+}
+
+
+.legenda{
+    font-size: 15px;
+    color: gray;
+}
+
+                    /*-----------------------
+                                                      NAV BAR
+                        
+                                                                        ------------------------*/
+
+a{
+    color: #fff;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.a1{
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.a2{
+    color: rgb(255, 0, 0);
+    text-decoration: none;
+    transition: 0.3s;
+}
+    
+a:hover{
+    opacity: 0.7;
+}
+    
+.logo{
+    font-size: 28px;
+    letter-spacing: 4px;
+}
+    
+nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #C71616;
+    height: 12vh;
+}
+    
+.nav-list{
+    list-style: none;
+    display: flex;
+    align-content: center;
+}
+    
+.nav-list li{
+    margin: 30px;
+    color: #fff;
+}
+    
+.nav-list li > a {
+    font-size: 20px;
+}    
+
+                    /*-----------------------
+                                                      FOOTER
+                        
+                                                                        ------------------------*/
+
+footer{
+    background-color: #FFB60D;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.foot-list {
+    list-style: none;
+    align-items: center;
+}
+
+.foot-list li {
+    margin: 5px;
+}
+
+#puc{
+    width: 10%;
+}
+                    /*-----------------------
+                                                      NAV BAR MOBILE
+                        
+                                                                        ------------------------*/
+
+.mobile-menu {
+    display: none;
+    cursor: pointer;
+}
+    
+.mobile-menu div {
+    width: 32px;
+    height: 2px;
+    background: #fff;
+    margin: 8px;
+    transition: 0.3s;
+}
+    
+@keyframes navLinkFade {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+    
+.mobile-menu.active .line1 {
+    transform: rotate(-45deg) translate(-8px, 8px);
+}
+
+.mobile-menu.active .line2 {
+    opacity: 0;
+}
+
+.mobile-menu.active .line3 {
+    transform: rotate(45deg) translate(-5px, -7px);
+}
+
+                    /*-----------------------
+                                                 FEED DE RECEITAS
+                        
+                                                                        ------------------------*/
+.topo{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#section{
+    width: 1200px;
+}
+
+.topo h1{
+    margin-top: 20px;
+}
+
+/*------- MODAL --------*/
+
+.content {
+    padding: 20px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 4% auto;
+    padding: 20px;
+    border: 1px solid #FA7D00;
+    width: 40%;
+    height: 85%;
+}
+
+#fecharModal{
+    width: 20%;
+    align-self: center;
+}
+
+#tempo, #review, #dificuldade, #calorias, #custo {
+    display: block;
+    width: 60%;
+    padding: 10px;
+    margin-bottom: 10px;
+    align-self: center;
+    color: #7c7c7c;
+    background-color: #ccc; /* Cor cinza inicial */
+    cursor: pointer;
+    border: none;
+}
+
+#tempo.active, #review.active, #dificuldade.active, #calorias.active, #custo.active {
+    background-color: #FA7D00; /* Cor laranja quando o filtro está ativo */
+    color: #fff;
+}
+
+#recipes{
+    display: grid;
+    justify-content: center;
+    grid-template-areas: 'receita receita';
+    column-gap: 40px;
+    row-gap: 40px;
+    margin-top: 20px;
+}
+
+.recipe {
+    padding: 10px;
+    background-size: cover; 
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: #FA7D00;
+    width: 450px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; 
+}
+
+#r1{background-image: url('../images/brigadeiro.jpg');} #r2{background-image: url('../images/tapioca.jpg');} #r3{background-image: url('../images/salada.jpg');}
+
+h4{
+	max-width: 100%; /* O texto não pode ser mais largo que a largura da div pai */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left: 10px;
+    color: #dadada;
+    text-shadow: 2px 2px 4px #000000; 
+}
+.rdcc{
+    display: flex;
+    justify-content: center;
+}
+
+.infos {
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+
+}
+
+.info{
+    border-color: #FA7D00;
+    color: #ffffff;
+    padding: 7px;
+    font-weight: bold;
+    font-size: 12pt;
+    margin: 10px;
+    border-radius: 4px;
+}
+
+                    /*-----------------------
+                                                 POSTAR RECEITAS
+                        
+  
+                                                                        ------------------------*/
+
+#insertRecipe{
+	display: grid;
+	grid-template-areas: 'titulo titulo'
+						 'descricao descricao'
+						 'imagem dificuldade'
+						 'instrucoes instrucoes'
+						 'tempo custo'
+						 'porcao ingredientes'	
+						 'btn btn';
+  grid-template-columns: 1fr 1fr; /* Duas colunas iguais */
+  grid-gap: 10px;						 			 						 
+}
+
+#divTitulo{grid-area: titulo;} #divDescricao{grid-area: descricao;} #divImagem{grid-area: imagem;} #divDificuldade{grid-area: dificuldade;}
+#divCusto{grid-area: custo;} #divTempoPreparo{grid-area: tempo;} #divPorcao{grid-area: porcao;} #divIngredientes{grid-area: Ingredientes;}
+
+.card2{
+    background-color: #ffffff80;
+    padding: 30px;
+    border-radius: 4%;
+    margin: 30px auto;
+    box-shadow: 3px 3px 1px 0px #00000060;
+    width: 1000px;	
+}
+
+#plus:focus{
+	color: white;
+}
+
+#plus, #minus{
+	width: 4%;
+	height: 60%;
+}
+
+#ola{
+	width: 200px;
+}
+
+#btnPC{
+	grid-area: btn;
+}
+
+#divIngredientes{
+	grid-area: ingredientes;
+}
+
+#divInstrucao {
+ grid-area: instrucoes;
+  display: grid;
+  grid-template-areas: 'ola'
+  'oi2';
+  justify-content: center;
+	border: 1px solid #FA7D00;
+	border-radius: 5px;
+	padding: 20px;
+}
+
+#instrucoes {
+  grid-area: ola;
+  display: grid;
+  grid-template-areas: 'oi oi'; 
+  width: 900px;
+  justify-content: space-around;
+}
+
+#lblI{
+	margin: 5px;
+}
+
+#instrucoes > div {
+  width: 430px; 
+}
+
+#instrucoes > div p {
+	margin: 15px 0px -5px 5px;
+	text-align: center;
+}
+     
+#divPM{
+	display: flex;
+	justify-content: center;
+	grid-area: oi2;
+}
+                    /*-----------------------
+                                               APRESENTAÇÃO DE RECEITA
+                                                                        ------------------------*/
+ 
+ h5{
+	 text-align: center;
+	 margin: 10px 0px 5px 0px;
+ } 
+ 
+ #aprDescricao{
+	 margin: 10px;
+	 font-size: 20px;
+ }
+ 
+#aprInfo button {
+    color: black;
+    transition: color 0.2s; 
+}
+
+#aprImagem{
+	margin: 15px;
+}
+
+#aprInstrucoes{
+	display: grid;
+	grid-template-areas: 'inst';
+	justify-content: left;
+}
+
+.isAuthor{
+	display: none;
+}
+
+.aprInst {
+    display: flex;
+    margin-left: 40px;
+}
+
+.justify-right{
+	display: flex;
+	justify-content: right;
+}
+
+#recipeRating{
+	margin-bottom: 10px;
+}
+
+.rating {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.star {
+    color: gray;
+}
+
+.star:hover,
+.star.active {
+    color: gold;
+}
+
+#btnAvaliar{
+	margin-top: 15px;
+}
+
+.none{
+	display: none;
+}
+
+.instCount{
+	width: 40px;
+	height: 40px;
+	justify-content: center;
+	text-align: center;
+	padding: 5px;
+	background-color: #FA7D00;
+	color: white;
+	font-size: 20px;
+}
+
+.inst, .instCount {
+    display: inline-block;
+}
+
+
+#aprInfo button:hover {
+    color: white;
+}
+
+#aprInfo button:focus {
+    outline: none; 
+}
+                                                                        
+#aprNutriInfo{
+	display: flex;
+	justify-content: center;
+}                                                                        
+        table {
+          
+            border-collapse: collapse;
+            width: 50%;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid rgb(205, 205, 205);
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: rgb(255, 220, 185);
+        }
+
+        td:first-child,
+        th:first-child {
+            border-left: none;
+        }
+
+        td:last-child,
+        th:last-child {
+            border-right: none;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+                                                                                                                                                
+                                                                                                                                           
+                    /*-----------------------
+                                                 LOG-IN E CADASTRO
+                        
+                                                                        ------------------------*/
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0px auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.container1{
+    display: flex;
+    justify-content: center;
+    width: 800px;
+    margin: 0px auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+#navR {
+    width: 100%;
+    margin: 10px 0px 10px 0px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-top: 1px solid rgb(255, 255, 255)303;
+}
+
+.card1{
+    background-color: #ffffff80;
+    padding: 30px;
+    border-radius: 4%;
+    box-shadow: 3px 3px 1px 0px #00000060;
+    width: 800px;
+}
+
+.card {
+    background-color: #ffffff80;
+    padding: 30px;
+    border-radius: 4%;
+    box-shadow: 3px 3px 1px 0px #00000060;
+    width: 400px;
+}
+
+.entrarCadastrar{
+    text-align: center;
+    margin-bottom: 20px;
+    color: #FA7D00;
+}
+
+.label-float input{
+    width: 100%;
+    padding: 5px 5px;
+    display: inline-block;
+    border: 0;
+    background-color: transparent;
+    outline: none;
+    min-width: 180px;
+    font-size: 16px;
+    transition: all .3s ease-out;
+    border-radius: 0;
+
+}
+
+.label-float input[type="text"], input[type="number"], input[type="password"]{
+border-bottom: 2px solid #FA7D00
+}
+
+.label-float{
+    position: relative;
+    padding-top: 13px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    display: flex;
+    justify-content: center;
+}
+
+.label-float input[type="text"]:focus, input[type="number"]:focus,
+.label-float input[type="text"]:focus:not([type="file"]) {
+    border-bottom: 2px solid #FA7D00;
+}
+
+
+.label-float label{
+    color: #FA7D00;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 0px;
+    transition: all .3s ease-out;
+}
+
+#ola{
+	width: 60%;
+	padding: 10px;
+	display: flex;
+	justify-content: center;
+}
+
+.label-float input:focus + label,
+.label-float input:valid + label{
+    font-size: 13px;
+    margin-top: 0;
+    color: #FA7D00;
+}
+
+  #msgError{
+    text-align: center;
+    color: #ff0000;
+    background-color: #ffbbbb;
+    padding: 10px;
+    border-radius: 4px;
+    display: none;
+  }
+  
+  #msgSuccess{
+    text-align: center;
+    color: #00bb00;
+    background-color: #bbffbe;
+    padding: 10px;
+    border-radius: 4px;
+    display: none;
+  }
+
+  #msgProgress{
+    text-align: center;
+    color: rgb(223, 146, 0);
+    background-color: rgb(255, 255, 128);
+    padding: 10px;
+    border-radius: 4px;
+    display: none;
+  }
+  
+button{
+    background-color: transparent;
+    border-color: #FA7D00;
+    color: #FA7D00;
+    padding: 7px;
+    font-weight: bold;
+    font-size: 12pt;
+    margin: 20px 20px 0px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: all .4s ease-out;
+}
+
+button:hover{
+    background-color: #FA7D00;
+    color: #fff;
+}
+
+.justify-center{
+    display: flex;
+    justify-content: center;
+}
+
+.fa-eye{
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    cursor: pointer;
+    color: #FA7D00;
+}
+
+#msgError, #msgError1, #msgError2, #msgError3, #msgError4, #msgError5{
+    text-align: center;
+    color: #ff0000;
+    background-color: #ffbbbb;
+    padding: 10px;
+    border-radius: 4px;
+    display: none;
+}
+
+#mantemID{
+	display: none;
+}
+
+#msgSuccess, #msgSuccess1, #msgSuccess2, #msgSuccess3, #msgSuccess4, #msgSuccess5{
+    text-align: center;
+    color: #00bb00;
+    background-color: #bbffbe;
+    padding: 10px;
+    border-radius: 4px;
+    display: none;
+}
+
+.centered{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+    font-size: 15px;
+}
+
+#cadastro{
+    text-decoration: none;
+    color: #FA7D00;
+}
+
+a:hover{
+    opacity: 0.7;
+}  
+
+
+#idade, #idade1, #categoria{
+    background-color: transparent;
+    width: 100%;
+    border-color: #FA7D00;
+    padding: 7px;
+    color: #FA7D00;
+    font-weight: bold;
+    font-size: 12pt;
+    margin: 10px 20px 0px 0px;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: all .4s ease-out;
+}
+
+#genero, #genero1{
+    background-color: transparent;
+    width: 150px;
+    border-color: #FA7D00;
+    padding: 7px;
+    color: #FA7D00;
+    font-weight: bold;
+    font-size: 12pt;
+    margin: 10px 00px 0px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: all .4s ease-out;
+}
+
+#sobreVoce{
+    margin-bottom: 0px;
+}
+
+#marque{
+    font-size: 18px;
+}
+
+.sv{
+    margin: 5px;
+}
+
+.boxSV {
+    width: 20px; 
+    height: 20px; 
+}
+
+.labelSV {
+    font-size: 20px; 
+}
+
+                                                                    
+                    /*-----------------------
+                                                 PÁGINA DE PERFIL
+                                                                        ------------------------*/
+
+.container2{
+    display: grid;
+    justify-content: center;
+    grid-template-areas: 'foto infobox infobox'
+                         'foto infobox infobox'
+                         'mural mural mural'
+                         'receitas receitas receitas'
+                         'null null botoes';
+    margin: 0px auto;
+    margin-top: 0px;
+}                               
+
+#botoes{
+    justify-self: right;
+}
+
+#config{width: 65px; justify-self: right;}
+
+#infoBox{
+    grid-area: infobox;
+    display: grid;
+    grid-template-areas: 'nome email email'
+                         'user idade genero';
+    margin: 20px;
+}
+
+#profile-picture {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    margin: 20px auto;
+    display: block;
+}
+
+#infoBox div{
+	padding-top: 5px;
+}
+
+.perfilInfo h3{
+	color: #FA7D00;
+}
+
+#divMural{
+	padding-top: 10px;
+	padding-bottom: 20px;
+	margin: 15px 0px 5px 0px;
+	grid-area: mural;
+	border-top: 2px solid #FA7D00;
+}
+
+
+#minhasReceitas{
+	padding-top: 10px;
+	padding-bottom: 20px;
+	margin: 10px 0px 20px 0px;
+	grid-area: receitas;
+	border-top: 2px solid #FA7D00;
+}
+
+.note {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    margin: 10px; 
+    z-index: 1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#cor {
+    height: 40px;
+}
+
+#mural {
+    width: 1000px;
+    height: 600px;
+    background-color: #fdff84;
+    display: grid;
+    grid-template-areas: 'note note note note';
+    justify-content: space-around;
+    align-content: center; 
+    padding: 10px; 
+    position: relative; 
+}
+
+#mural::before,
+#mural::after {
+    content: "";
+    flex: 1;
+    height: 100%;
+    position: absolute;
+    background: repeating-linear-gradient(
+        to right,
+        #ffffff,
+        #ffffff 3px,
+        #fdff84 3px,
+        #fdff84 20px
+    );
+    top: 0;
+    bottom: 0;
+}
+
+#mural::before {
+    left: 0;
+}
+
+#mural::after {
+    right: 0;
+}
+
+.note p {
+	margin: 0px;
+	text-align: center;
+    padding: 10px; 
+}
+
+  
+  #fotoInput{
+    grid-column: 1;
+    margin-top: 5px;
+    display: none;
+  }
+  
+ /* CONFIGURÇAÕES */
+ 
+ #divTarefas{
+	 margin-top: 10px;
+ }
+ 
+ #divTarefas div{
+	border-top: 2px solid #FA7D00;
+	padding: 10px;
+ }
+
+                    /*-----------------------
+                                                 GERENCIAMENTO
+                                                                        ------------------------*/
+
+#navEntidades{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border-top: 1px solid rgb(255, 255, 255)303;
+}
+    
+#navEntidades li, #navR li {
+    flex-grow: 1;
+    padding: 10px;
+    background-color: #b2b3a4;
+    border-right: 2px solid #ffffff;
+    cursor: pointer;
+    text-align: center;
+}
+    
+#navEntidades li:last-child, #navR li:last-child {
+    border-right: none; 
+}
+
+#navEntidades #active, #navR #active {
+    background-color: #87887a;
+}           
+
+#btnGerenciar{
+    display: grid;
+    grid-template-areas: 'oi oi oi';
+    align-items: center;
+    gap: 10px;
+    justify-content: space-around;
+    margin: 0px 0px 20px 0px;
+}
+
+
+.atributos{
+    width: 100%;
+    margin: 0px 0px 5px 0px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-top: 1px solid rgb(255, 255, 255)303;
+}
+
+.atributos li {
+    flex-grow: 1;
+    padding: 10px;
+    background-color: #f3f2f0;
+    border-right: 2px solid #ffffff;
+    cursor: pointer;
+    text-align: center;
+}
+
+.atributos li:last-child {
+	border-right: none;
+}
+
+#pesquisar{
+	margin: 0px;
+}
+
+#bttn > button {
+	margin: 24px 2px 0px 2px;
+}
+
+.model-content1{
+	margin: 20px auto;
+    background-color: #ffffff80;
+    padding: 30px;
+    border-radius: 4%;
+    box-shadow: 3px 3px 1px 0px #00000060;
+    width: 30%;
+    max-height: 125%;
+    position: relative; 
+    background-color: #fefefe;
+    margin: 4% auto;
+    border: 1px solid #FA7D00;
+}
+
+.model-content7{
+	margin: 20px auto;
+    background-color: #ffffff80;
+    padding: 30px;
+    border-radius: 4%;
+    box-shadow: 3px 3px 1px 0px #00000060;
+    width: 50%;
+    max-height: 180%;
+    position: relative; 
+    background-color: #fefefe;
+    margin: 4% auto;
+    border: 1px solid #FA7D00;
+}
+
+.model-content3{
+	margin: 20px auto;
+    background-color: #ffffff80;
+    padding: 30px;
+    border-radius: 4%;
+    box-shadow: 3px 3px 1px 0px #00000060;
+    width: 30%;
+    max-height: 145%;
+    position: relative; 
+    background-color: #fefefe;
+    margin: 4% auto;
+    border: 1px solid #FA7D00;
+}
+
+.model-content2{
+    background-color: #ffffff80;
+    padding: 30px;
+    border-radius: 4%;
+    box-shadow: 3px 3px 1px 0px #00000060;
+    width: 30%;
+    max-height: 50%;
+    position: relative; 
+    background-color: #fefefe;
+    margin: 4% auto;
+    border: 1px solid #FA7D00;
+}
+
+.model-content4{
+    background-color: #ffffff80;
+    padding: 30px;
+    border-radius: 4%;
+    box-shadow: 3px 3px 1px 0px #00000060;
+    width: 30%;
+    max-height: 60%;
+    position: relative; 
+    background-color: #fefefe;
+    margin: 4% auto;
+    border: 1px solid #FA7D00;
+}
+
+.model-content5{
+    background-color: #ffffff80;
+    padding: 30px;
+    border-radius: 4%;
+    box-shadow: 3px 3px 1px 0px #00000060;
+    width: 30%;
+    max-height: 70%;
+    position: relative; 
+    background-color: #fefefe;
+    margin: 4% auto;
+    border: 1px solid #FA7D00;
+}
+
+.model-content6{
+    background-color: #ffffff80;
+    padding: 30px;
+    border-radius: 4%;
+    box-shadow: 3px 3px 1px 0px #00000060;
+    width: 30%;
+    max-height: 75%;
+    position: relative; 
+    background-color: #fefefe;
+    margin: 4% auto;
+    border: 1px solid #FA7D00;
+}
+
+.model-content8{
+    background-color: #ffffff80;
+    padding: 30px;
+    border-radius: 4%;
+    box-shadow: 3px 3px 1px 0px #00000060;
+    max-width: 80%;
+    height: 80%;
+    position: relative; 
+    background-color: #fefefe;
+    margin: 4% auto;
+    border: 1px solid #FA7D00;
+}
+
+#myModal8{
+	display: flex;
+	justify-content: center;
+}
+
+legend{
+	font-size: 15px;
+}
+                                                                    
+                    /*-----------------------
+                                                 FORM DE ALIMENTOS
+                                                                        ------------------------*/
+
+.foodForm{
+    background-color: #ffffff80;
+    padding: 30px;
+    border-radius: 4%;
+    box-shadow: 3px 3px 1px 0px #00000060;
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}    
+
+#foodPresentation {
+	margin-top: -10px;
+    display: grid;
+    grid-template-areas: 'oi oi';
+    grid-gap: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+#orderBy {
+    background-color: transparent;
+    border-color:#FA7D00; 
+    color: #FA7D00;
+    padding: 7px;
+    height: 60%;
+    font-weight: bold;
+    font-size: 12pt;
+    margin-top: 25px;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: all .4s ease-out;
+    border-width: 2px;
+}
+
+#searchBox {
+    height: 32%;
+    width: 300px;
+    background-color: transparent;
+    border-color: #FA7D00;
+    color: #FA7D00;
+    padding: 7px;
+    font-weight: bold;
+    font-size: 12pt;
+    margin-top: 25px;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: all .4s ease-out;
+}
+
+#searchBox::placeholder {
+    color: #FA7D00;
+  }  
+
+#alimentos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px; 
+    margin-top: 30px;
+}
+
+#alimentos div{
+    width: 200px;
+    border: 1px solid #FA7D00;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: all .4s ease-out;
+    background-size: cover;
+    background-position: center;
+    height: 100px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#alimentos > div {
+    position: relative;
+}
+
+#alimentos > div > h2 {
+    color: #ffffff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 10px; 
+    text-shadow: 2px 2px 4px #000000; 
+}
+
+#alimentos > div > input.checkbox {
+    align-self: flex-end; 
+    margin-right: 30px; 
+    transform: scale(3.0);
+    border: 0px solid #ffffff;
+}
+
+#alimentos > div > input.checkbox:checked {
+    background-color: #FA7D00 !important; 
+    border-color: #FA7D00;
+}
+
+                    /*-----------------------
+                                                 INSERIR ALIMENTO
+                                                                        ------------------------*/
+
+#section1{
+    max-width: 900px;
+}    
+
+#inserirAlimento > div > label {
+    font-size: 20px;
+}
+
+#grid{
+    display: grid;
+    grid-template-areas: 'nome imagem'
+                         'categoria restricao'
+                         'info info'
+                         'botoes botoes';
+    
+    gap: 20px;
+}
+
+.labelBig{
+	font-size: 25px;
+}
+
+#imagem{
+    margin: 10px;
+}
+
+#divNome{grid-area: nome;} #divImagem{grid-area: imagem;} #restricoes{grid-area: restricao;} #infoNutricional{grid-area: info;} #botoes{grid-area: botoes;}
+
+#infoNutricional{
+    display: grid;
+    grid-template-areas: 'campo campo';
+    justify-content: space-around;
+    row-gap: 20px;
+}
+
+input {
+    border-color: #FA7D00;
+    margin: 5px;
+}
+
+#labelTipo{
+	margin-bottom: 5px;
+	color: #FA7D00;
+}
+
+#botoes{
+    display: flex;
+    justify-content: center;
+}
+
+#inserir{
+    width: 150px;
+}
+
+#infoNutricional{
+    border: 1px solid #FA7D00;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#restrictions{
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	justify-content: space-between;
+	padding: 0px;
+}
+
+#restrictions > div {
+	margin: 0px auto;
+}
+
+                    /*-----------------------
+                                                      MEDIA QUERIES
+                        
+                                                                        ------------------------*/
+
+.membro{
+  display: grid;
+  background-color: rgb(251, 132, 0);
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 0 auto;
+  margin-bottom: 60px;
+}
+
+.eu{
+  width: 180px;
+  height: 180px;
+  border-radius: 100%;
+  margin: 0px;
+}
+
+.sobrenos{
+  font-size: 16px;
+  width: 50%;
+  color: floralwhite;
+  margin: 10px;
+}
+
+.oi{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.myname{
+  text-shadow: none;
+  color: white;
+  margin: 0 auto;
+  margin-bottom: 5px;
+}
+
+.tchau{
+  padding: 30px 30px 0px 0px;
+  color: #071963;
+}
+
+.nois{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+                    /*-----------------------
+                                                      MEDIA QUERIES
+                        
+                                                                        ------------------------*/
+
+@media (max-width: 999px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    .nav-list {
+        position: absolute;
+        top: 8vh;
+        right: 0;
+        width: 50vw;
+        height: 92vh;
+        background: #C71616;
+        flex-direction: column;
+        align-items: center;
+        transform: translateX(100%);
+        padding: 0px;
+    }
+
+    .nav-list li {
+        margin: 50px 30px 50px 30px;
+        opacity: 0;
+    }
+
+    .mobile-menu {
+        display: block;
+        z-index: 9999;
+    }
+
+    .fotos{
+        max-width: 100%;
+        
+    }
+
+    footer{
+        flex-wrap: wrap;
+    }
+    
+    #puc{
+        width: 30%;
+    }
+
+    .nav-list.active {
+        transform: translateX(0);
+    }
+
+    .nav-list:not(.active) {
+        display: none;
+    }
+}

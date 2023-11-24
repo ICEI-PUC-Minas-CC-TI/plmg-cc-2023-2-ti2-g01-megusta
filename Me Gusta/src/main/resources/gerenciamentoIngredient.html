@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/averia" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/estilo.css">
+    <title>Ferramentas do Gerente</title>
+</head>
+<body>
+	<script>
+		
+	    document.addEventListener('DOMContentLoaded', function() {
+	        // Listar os ingredientes
+	        document.getElementById("list").addEventListener("click", obterIngredientes);
+	        
+	        function obterIngredientes() {
+	            let i = 1;
+	            fetch('http://localhost:6789/ingrediente')  
+	                .then(response => response.json())
+	                .then(data => {
+	                    console.log('Data:', data); 
+	                    const mostrarElement = document.getElementById("mostrar");
+	                    mostrarElement.innerHTML = ""; // Limpa o conteúdo existente
+	                    
+	                    if (data) {
+	                        data.forEach(ingrediente => {
+	                            mostrarElement.innerHTML += `        
+	                            <ul class="atributos">
+	                                <li style="background-color: #eae8e5;">${i}</li>
+	                                <li>${ingrediente.id}</li>
+	                                <li>${ingrediente.nome}</li>
+	                                <li>${ingrediente.categoria}</li>
+	                            </ul>`;
+	                        });
+	                    } else {
+	                        console.error('Resposta inválida. A propriedade "ingrediente está ausente.');
+	                    }
+	                })
+	                .catch(error => console.error('Erro ao obter ingredientes:', error));
+	        }
+	        
+	        function obterRestricoes() {
+	            fetch('http://localhost:6789/restricao')  
+	                .then(response => response.json())
+	                .then(data => {
+	                    console.log('Data oooi:', data); 
+	                    const mostrarDr = document.getElementById("dr");
+	                    mostrarDr.innerHTML = "";
+	                    const mostrarCds = document.getElementById("cds");
+	                    mostrarCds.innerHTML = "";
+						const mostrarEdv = document.getElementById("edv");
+						mostrarEdv.innerHTML = "";								
+	                    if (data) {
+	                        data.forEach(restricao => {
+								if(restricao.tipo == "Estilo de Vida"){
+		                            mostrarEdv.innerHTML += `
+		                             <div>
+										 <input type="checkbox" for="restricao${restricao.nome}" name="restrictions" value="${restricao.id}">
+	               						 <label for="restricao${restricao.nome}">${restricao.nome}</label>
+	               					</div>`;
+								} else if (restricao.tipo == "Condição de Saúde"){
+		                            mostrarCds.innerHTML += `
+		                             <div>
+										 <input type="checkbox" for="restricao${restricao.nome}"  name="restrictions" value="${restricao.id}">
+	               						 <label for="restricao${restricao.nome}"">${restricao.nome}</label>
+	               					</div>`;									
+								} else {
+		                            mostrarDr.innerHTML += `
+		                             <div>
+										 <input type="checkbox" id="restricao${restricao.nome}" name="restrictions" value="${restricao.id}">
+	               						 <label for="restricao${restricao.nome}">${restricao.nome}</label>
+	               					</div>`;										
+								}
+
+	                        });
+	                    } else {
+	                        console.error('Resposta inválida. A propriedade "restricao" está ausente.');
+	                    }
+	                })
+	                .catch(error => console.error('Erro ao obter restrições:', error));
+	        }
+	        
+	       function obterRestricoes1() {
+	            fetch('http://localhost:6789/restricao')  
+	                .then(response => response.json())
+	                .then(data => {
+	                    console.log('Data oooi:', data); 
+	                    const mostrarDr = document.getElementById("dr1");
+	                    mostrarDr.innerHTML = "";
+	                    const mostrarCds = document.getElementById("cds1");
+	                    mostrarCds.innerHTML = "";
+						const mostrarEdv = document.getElementById("edv1");
+						mostrarEdv.innerHTML = "";								
+	                    if (data) {
+	                        data.forEach(restricao => {
+								if(restricao.tipo == "Estilo de Vida"){
+		                            mostrarEdv.innerHTML += `
+		                             <div>
+										 <input type="checkbox" for="restricao${restricao.nome}" name="restrictions" value="${restricao.id}">
+	               						 <label for="restricao${restricao.nome}">${restricao.nome}</label>
+	               					</div>`;
+								} else if (restricao.tipo == "Condição de Saúde"){
+		                            mostrarCds.innerHTML += `
+		                             <div>
+										 <input type="checkbox" for="restricao${restricao.nome}"  name="restrictions" value="${restricao.id}">
+	               						 <label for="restricao${restricao.nome}"">${restricao.nome}</label>
+	               					</div>`;									
+								} else {
+		                            mostrarDr.innerHTML += `
+		                             <div>
+										 <input type="checkbox" id="restricao${restricao.nome}" name="restrictions" value="${restricao.id}">
+	               						 <label for="restricao${restricao.nome}">${restricao.nome}</label>
+	               					</div>`;										
+								}
+
+	                            i++;
+	                        });
+	                    } else {
+	                        console.error('Resposta inválida. A propriedade "restricao" está ausente.');
+	                    }
+	                })
+	                .catch(error => console.error('Erro ao obter restrições:', error));
+	        }
+	        
+	        document.getElementById("orderBy").addEventListener("change", function (event) {
+	            const selectedOrder = event.target.value;
+	            obterIngredientesOrdenados(selectedOrder);
+	        });
+
+		    document.getElementById("pesquisar").addEventListener("click", function() {
+		        // Chama a função de pesquisa quando o botão é clicado
+		        pesquisarItem();
+		    });
+	
+	        // Função para fazer a solicitação AJAX
+	        function obterIngredientesOrdenados(orderBy) {
+				let i = 1;
+	            const url = `http://localhost:6789/ingrediente/ordenar?orderBy=${orderBy}`;
+	            console.log('URL da Requisição:', url);  
+	            console.log('Requisição enviada!');
+	            fetch(url)  
+	                .then(response => {
+	                    if (!response.ok) {
+	                        throw new Error(`HTTP error! Status: ${response.status}`);
+	                    }
+	                    return response.json();
+	                })
+	                .then(data => {
+	                    console.log('Data:', data); 
+	                    const mostrarElement = document.getElementById("mostrar");
+	                    mostrarElement.innerHTML = ""; // Limpa o conteúdo existente
+	    
+	                    if (data) {
+	                        data.forEach(ingrediente => {
+	                            mostrarElement.innerHTML += `
+	                            <ul class="atributos">
+	                                <li style="background-color: #eae8e5;">${i}</li>
+	                                <li>${ingrediente.id}</li>
+	                                <li>${ingrediente.nome}</li>
+	                                <li>${ingrediente.categoria}</li>
+	                            </ul>`;
+	                            i++;
+	                        });
+	                    } else {
+	                        console.error('Resposta inválida. A propriedade "restricao" está ausente.');
+	                    }
+	                })
+	                .catch(error => console.error('Erro ao obter restrições:', error));
+	        }
+	
+	    function pesquisarItem() {
+			let i = 1;
+	        const searchTerm = document.getElementById("searchBox").value;
+	
+	        if (searchTerm.trim() === "") {
+	            alert("Por favor, insira um termo de pesquisa válido.");
+	            return;
+	        }
+	
+	        const url = `http://localhost:6789/ingrediente/pesquisar?termo=${encodeURIComponent(searchTerm)}`;
+	
+	        fetch(url)
+	            .then(response => {
+	                if (!response.ok) {
+	                    throw new Error(`Erro HTTP! Status: ${response.status}`);
+	                }
+	                return response.json();
+	            })
+                .then(data => {
+                    console.log('Data:', data); 
+                    const mostrarElement = document.getElementById("mostrar");
+                    mostrarElement.innerHTML = ""; // Limpa o conteúdo existente
+    
+                    if (data && data.length > 0 ){
+                        data.forEach(ingrediente => {
+                            mostrarElement.innerHTML += `
+                            <ul class="atributos">
+                                <li style="background-color: #eae8e5;">${i}</li>
+	                                <li>${ingrediente.id}</li>
+	                                <li>${ingrediente.nome}</li>
+	                                <li>${ingrediente.categoria}</li>
+                            </ul>`;
+                            i++;
+                        });
+                    } else {
+                        console.error('Resposta inválida. A propriedade "ingrediente" está ausente.');
+                        mostrarElement.innerHTML += '<p class="text-center">Nenhum item corresponde à pesquisa :(</p>';
+                    }
+                })
+	            .catch(error => {
+	                console.error('Erro durante a pesquisa:', error);
+	            });
+	   		 }
+	   		 
+	   		// Fechar e abrir o modal de Inserir
+	   		var btnModalInserir = document.getElementById("modalInserir");
+		    var modalInserir = document.getElementById("myModalInserir");
+		    var fecharModalInserir = document.getElementById("fecharInserir");
+		
+		    // Quando o botão é clicado, exibe o modal
+		    btnModalInserir.addEventListener("click", function() {
+		        modalInserir.style.display = "block";
+		        obterRestricoes();
+		    });
+		
+	   		let msgError = document.getElementById("msgError");
+	    	let msgSuccess = document.getElementById("msgSuccess");
+	    	fecharModalInserir.addEventListener("click", function(event) {
+				event.preventDefault();
+ 				modalInserir.style.display = "none";
+ 				msgSuccess.style.display = 'none';
+	            msgError.style.display = 'none';
+	            insertIngredient.reset();
+		    });
+	   		 // Inserir restrição no BD
+	   		var insertIngredient = document.getElementById('insertIngredient');
+	    	insertIngredient.addEventListener("submit", function (event) {
+	        event.preventDefault();
+	
+	        const inserirIngredienteURL = 'http://localhost:6789/ingrediente/insert';
+	
+	        // Construir manualmente uma string com os dados do formulário
+	        const formData = new URLSearchParams(new FormData(insertIngredient));
+	
+	        // Adicione os dados do formulário como parâmetros de consulta à URL
+	        const urlComParametros = `${inserirIngredienteURL}?${formData}`;
+	
+	        // Requisição POST para inserir o usuário
+	        fetch(urlComParametros, {
+	            method: 'POST',
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            console.log(data);
+	            if (data.success) {
+	                msgSuccess.style.display = 'block';
+	                msgSuccess.innerHTML = '<strong>Ingrediente inserido com sucesso!</strong>';
+	                msgError.style.display = 'none';
+	                msgError.innerHTML = '';
+	                
+	            } else {
+					 if (data.ingredientExists) {
+	                    msgError.style.display = 'block';
+	                    msgError.innerHTML = '<strong>Ingrediente já cadastrado.</strong>';
+	                    msgSuccess.innerHTML = '';
+	                    msgSuccess.style.display = 'none';
+	                } else {
+	                    msgError.style.display = 'block';
+	                    msgError.innerHTML = '<strong>Falha ao cadastrar ingrediente. Verifique os dados e tente novamente.</strong>';
+	                    msgSuccess.innerHTML = '';
+	                    msgSuccess.style.display = 'none';
+	                }
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Erro durante a solicitação POST:', error);
+	        });
+	    });
+	    
+	        // Fechar e abrir o modal de editar
+	   		var abrirModalEditar = document.getElementById("modalAlterar");
+		    var modalEditar = document.getElementById("myModalEditar");
+		    var fecharModalEditar = document.getElementById("fecharEditar");
+		  	var modalEditarAqui = document.getElementById("modalEditarAqui");
+		    var modal2 = document.getElementById("myModal2");
+		    var fecharModal2 = document.getElementById("fecharModal2");
+		    let msgError1 = document.getElementById("msgError1");
+
+	    	 var formUpdate = document.getElementById('update');
+	    	 
+	       // Quando o botão é clicado, exibe o modal 
+		    abrirModalEditar.addEventListener("click", function() {
+		        modal2.style.display = "block";
+		    });
+		
+			fecharModal2.addEventListener("click", function(event) {
+ 				modal2.style.display = "none";
+ 				msgError1.style.display = "none";
+ 				formUpdate.reset();
+		    });
+		
+			if(fecharModalEditar){
+				fecharModalEditar.addEventListener("click", function(event) {
+ 				modalEditar.style.display = "none";
+		    });
+			}
+		  	
+			formUpdate.addEventListener("submit", function (event) {
+			    event.preventDefault();
+			    
+			    const buscaIngredienteURL = 'http://localhost:6789/obterIngrediente';
+		
+		        // Construir manualmente uma string com os dados do formulário
+		        const formData = new URLSearchParams(new FormData(formUpdate));
+		        
+		        const urlComParametros = `${buscaIngredienteURL}?${formData}`;
+		        
+			   fetch(urlComParametros, {
+	            	method: 'POST',
+	        	})
+			        .then(response => response.json())
+			        .then(data => {
+			            console.log('Data:', data); 
+			
+			            if (data.success) {
+							
+			                abrirModalAlterar(data.object);
+			                modal2.style.display = "none";
+			                modalEditar.style.display = "block";
+			                formUpdate.reset();
+			            } else {
+			                msgError1.style.display = 'block';
+			                msgError1.innerHTML = '<strong>Ingrediente não encontrado.</strong>';
+			            }
+			        })
+			        .catch(error => console.error('Erro ao obter usuário:', error));
+			});
+			
+			function abrirModalAlterar(ingrediente){
+  
+				modalEditarAqui.innerHTML = "";
+				
+				modalEditarAqui.innerHTML += `
+				<h1 class="entrarCadastrar">Editar Ingrediente</h1>
+				<div id="msgError2"></div>
+				<div id="msgSuccess2"></div>
+				
+				<form id="editIngredient">
+				<div id="mantemID">
+					<input type="text" id="id" name="id" placeholder="" value="${ingrediente.id}" required />
+				 </div>
+				<div id="grid">
+					<div id="divNome">
+	                <label class="labelBig" for="nome">Nome:</label> <br>
+	                <input type="text" id="nome" name="nome" required>
+	            </div>
+	        
+	            <div id="divImagem" >
+	                <label class="labelBig" for="imagem">Imagem:</label> <br>
+	                <input type="file" id="imagem" name="imagem" accept="image/*">
+	            </div>
+       
+	            <div id="divCategoria" >
+	                <label class="labelBig" for="categoria">Categoria:</label> <br>
+	                <select name="categoria" id="categoria">
+						<option value="base">Selecione uma categoria</option>
+						<option value="Açucares">Açúcares</option>
+						<option value="Frutas">Frutas</option>
+						<option value="Grãos e Sereais">Grãos e Cereais</option>
+						<option value="Leites e Derivados">Leite e derivados</option>
+						<option value="Massas">Massas</option>
+						<option value="Óleos">Óleos e gorduras</option>
+						<option value="Proteínas">Proteinas</option>
+						<option value="Verduras">Verduras</option>
+						<option value="Outros">Outros</option>
+					</select>
+	            </div>
+	            
+				</div>
+	            
+	            <div id="infoNutricional">
+	                <label class="labelBig" for="infoNutricional">Informação Nutricional:</label> <br>
+	                <div>
+	                    <label for="calorie">Caloria:</label> <br>
+	                    <input type="text" id="calorie" name="infoNutricional[calorias]">
+	                </div>
+	        
+	                <div>
+	                    <label for="carboidratos">Carboidrato:</label> <br>
+	                    <input type="text" id="carboidratos" name="infoNutricional[carboidratos]">
+	                </div>
+	
+	                <div>
+	                    <label for="proteinas">Proteína:</label> <br>
+	                    <input type="text" id="proteinas" name="infoNutricional[proteinas]">
+	                </div>
+	
+	                <div>
+	                    <label for="gorduraTrans">Gordura Trans:</label> <br>
+	                    <input type="text" id="gorduraTrans" name="infoNutricional[gorduraTrans]">
+	                </div>
+	        
+	                <div>
+	                    <label for="gorduraSaturada">Gordura Saturada:</label> <br>
+	                    <input type="text" id="gorduraSaturada" name="infoNutricional[gorduraSaturada]">
+	                </div>
+	
+	                <div>
+	                    <label for="fibra">Fibra:</label> <br>
+	                    <input type="text" id="fibra" name="infoNutricional[fibra]">
+	                </div>
+	
+	                <div>
+	                    <label for="sodio">Sódio:</label> <br>
+	                    <input type="text" id="sodio" name="infoNutricional[sodio]">
+	                </div>
+	            </div>
+	            	<br>
+	            	
+				  <label class="labelBig" for="restrictions">Restrições:</label> <br>
+				  <div id="restrictions">
+					  <div>
+						<label for="edv1">Estilo de vida</label> <br>
+					  	<div id="edv1">
+					  	</div>
+					  </div>
+						  
+					  <div>
+						  <label for="cds1">Condição de saúde</label> <br>
+						  <div id="cds1">						  
+					  	  </div>
+					  </div>
+					  
+					  <div>
+						  <label for="dr1">Demais Restrições</label> <br>
+						  <div id="dr1">
+						  </div>						  
+					  </div>
+				  </div>				 
+
+		         <div class="justify-center">
+			         <button type="submit" id="editar">Confirmar</button>
+			         <button id="cancelar">Cancelar</button>
+		          </div>
+				</form>
+				`;
+				
+			obterRestricoes1();
+			let msgError2 = document.getElementById("msgError2");
+	    	let msgSuccess2 = document.getElementById("msgSuccess2");
+			// Editar restrição no BD
+	   		var editIngredient = document.getElementById('editIngredient');
+			if(editIngredient){
+				editIngredient.addEventListener("submit", function (event) {
+		        event.preventDefault();
+
+		        const updateIngredientURL = 'http://localhost:6789/ingrediente/update';
+		
+		        // Construir manualmente uma string com os dados do formulário
+		        const formData = new URLSearchParams(new FormData(editIngredient));
+		
+		        // Adicione os dados do formulário como parâmetros de consulta à URL
+		        const urlComParametros = `${updateIngredientURL}?${formData}`;
+				
+		        // Requisição POST para inserir o usuário
+		        fetch(urlComParametros, {
+		            method: 'POST',
+		        })
+		        .then(response => response.json())
+		        .then(data => {
+		            console.log(data);
+		            if (data.success) {
+		                msgSuccess2.style.display = 'block';
+		                msgSuccess2.innerHTML = '<strong>Ingrediente alterado com sucesso!</strong>';
+		                msgError2.style.display = 'none';
+		                msgError2.innerHTML = '';
+		
+					setTimeout(function() {
+					    modalEditar.style.display = "none";
+					}, 2000);
+					
+		            } else {
+	                    msgError2.style.display = 'block';
+	                    msgError2.innerHTML = '<strong>Falha ao atualizar ingrediente.</strong>';
+	                    msgSuccess2.innerHTML = '';
+	                    msgSuccess2.style.display = 'none';
+	                }
+		            
+		        })
+		        .catch(error => {
+		            console.error('Erro durante a solicitação POST:', error);
+		        });
+		    });
+			}
+			
+			var cancelar = document.getElementById("cancelar");
+			
+			if(cancelar){
+				cancelar.addEventListener("click", function(event) {
+				event.preventDefault();
+ 				modalEditar.style.display = "none";
+		    });
+			}
+		    }
+		    
+		    var btnModal4 = document.getElementById("modalDeletar");
+		    var modal4 = document.getElementById("myModal4");
+		    var fecharModal4 = document.getElementById("fecharModal4");
+		    
+		
+		    // Quando o botão é clicado, exibe o modal
+		    btnModal4.addEventListener("click", function() {
+		        modal4.style.display = "block";
+		    });
+		    
+			// Deletar uma restricao
+			var formDelete = document.getElementById('delete');
+			
+		   if(fecharModal4){
+			fecharModal4.addEventListener("click", function(event) {
+ 				modal4.style.display = "none";
+ 				msgSuccess4.style.display = 'none';	
+		        msgError4.style.display = 'none';
+		        formDelete.reset();
+		    });
+		   }
+	   				
+			if(formDelete){
+				formDelete.addEventListener("submit", function (event) {
+			    event.preventDefault();
+			    
+			    const deletarIngredienteURL = 'http://localhost:6789/deletarIngrediente';
+		
+		        // Construir manualmente uma string com os dados do formulário
+		        const formData = new URLSearchParams(new FormData(formDelete));
+		        
+		        const urlComParametros = `${deletarIngredienteURL}?${formData}`;
+		        
+			   fetch(urlComParametros, {
+	            	method: 'POST',
+	        	})
+			        .then(response => response.json())
+			        .then(data => {
+			            console.log('Data:', data); 
+			
+			            if (data.success) {
+							msgSuccess4.style.display = 'block';
+			                msgSuccess4.innerHTML = '<strong>Ingrediente deletado.</strong>';
+			                setTimeout(function() {
+					    		modal4.style.display = "none";
+					    		formDelete.reset();
+							}, 2000);
+							msgError4.innerHTML = '';
+		                    msgError4.style.display = 'none';
+			            } else if (!data.ingredientExists){
+			                msgError4.style.display = 'block';
+			                msgError4.innerHTML = '<strong>Ingrediente não cadastrado</strong>';
+							msgSuccess4.innerHTML = '';
+		                    msgSuccess4.style.display = 'none';							
+						} else if (!data.validSuperuser){
+			                msgError4.style.display = 'block';
+			                msgError4.innerHTML = '<strong>Superusuário não encontrado</strong>';
+							msgSuccess4.innerHTML = '';
+		                    msgSuccess4.style.display = 'none';							
+						} else if (data.passwordIncorrect){
+			                msgError4.style.display = 'block';
+			                msgError4.innerHTML = '<strong>Senha inválida</strong>';
+							msgSuccess4.innerHTML = '';
+		                    msgSuccess4.style.display = 'none';							
+						} else {
+			                msgError4.style.display = 'block';
+			                msgError4.innerHTML = '<strong>Ingrediente não deletado.</strong>';
+							msgSuccess4.innerHTML = '';
+		                    msgSuccess4.style.display = 'none';
+			            }
+			        })
+			        .catch(error => console.error('Erro ao editar ingrediente:', error));
+			});	
+			}
+			
+		    var modal5 = document.getElementById("myModal5");
+		    var abrirDeletarTudo = document.getElementById("modalDeletarTudo");
+		    var fecharModal5 = document.getElementById("fecharModal5");
+		    let msgError5 = document.getElementById("msgError5");
+		    let msgSuccess5 = document.getElementById("msgSuccess5");
+		    
+		    // Quando o botão é clicado, exibe o modal
+		    abrirDeletarTudo.addEventListener("click", function() {
+		        modal5.style.display = "block";
+		    });
+		    
+		var formDeleteAll = document.getElementById('deleteAll');
+		    fecharModal5.addEventListener("click", function(event) {
+		        modal5.style.display = "none";
+		        msgError5.style.display = 'none';
+		        msgSuccess5.style.display = 'none';
+				formDeleteAll.reset();
+		    });
+		   
+			
+			formDeleteAll.addEventListener("submit", function (event) {
+			    event.preventDefault();
+			    
+			    const deletarIngredienteURL = 'http://localhost:6789/deletarTodosIngredientes';
+		
+		        // Construir manualmente uma string com os dados do formulário
+		        const formData = new URLSearchParams(new FormData(formDeleteAll));
+		        
+		        const urlComParametros = `${deletarIngredienteURL}?${formData}`;
+		        
+			   fetch(urlComParametros, {
+	            	method: 'POST',
+	        	})
+			        .then(response => response.json())
+			        .then(data => {
+			            console.log('Data:', data); 
+			
+			            if (data.success) {
+							msgSuccess5.style.display = 'block';
+			                msgSuccess5.innerHTML = '<strong>Ingredientes deletados.</strong>';
+			                setTimeout(function() {
+					    		modal5.style.display = "none";
+					    		
+					    		formDeleteAll.reset();
+							}, 2000);
+							msgError5.innerHTML = '';
+		                    msgError5.style.display = 'none';
+			            } else if(!data.validSuperuser){
+							msgError5.style.display = 'block';
+			                msgError5.innerHTML = '<strong>Superuser não reconhecido.</strong>';
+							msgSuccess5.innerHTML = '';
+							
+		                    msgSuccess5.style.display = 'none';
+		                 } else if(data.passwordIncorrect) {
+			                msgError5.style.display = 'block';
+			                msgError5.innerHTML = '<strong>Senha incorreta.</strong>';
+							msgSuccess5.innerHTML = '';
+		                    msgSuccess5.style.display = 'none';
+						} else if(!data.success) {
+			                msgError5.style.display = 'block';
+			                msgError5.innerHTML = '<strong>Ingredientes não deletados.</strong>';
+							msgSuccess5.innerHTML = '';
+		                    msgSuccess5.style.display = 'none';
+			            }
+			        })
+			        .catch(error => console.error('Erro:', error));
+			});	
+		
+		});
+	</script>
+    <header>
+        <nav id="nav">
+          <a class="logo" href="index.html">ME GUSTA</a>
+          <div class="mobile-menu dark">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+          </div>
+          <ul class="nav-list">
+            <li><a onclick="testeLogin2()">FEED</a></li>
+          <li><a onclick="testeLogin1()">MEU PERFIL</a></li>
+          </ul>
+        </nav>
+      </header>
+      
+    <section id="section">
+        <h1 class="text-center">Menu de Gerenciamento</h1>
+
+	     <ul id="navEntidades">
+	        <li><a href="gerenciamentoUser.html">USUÁRIOS</a></li>
+	        <li id="active"><a href="gerenciamentoIngredient.html">INGREDIENTES</a></li>
+	        <li><a href="gerenciamentoRecipe.html">RECEITAS</a></li>
+	        <li><a href="gerenciamentoRestriction.html">RESTRIÇÕES</a></li>
+	    </ul>
+
+        <div id="btnGerenciar">
+            <div>
+                <input type="text" id="searchBox" name="searchBox" placeholder="Busque um item">
+                <button id="pesquisar"><i id="lupa" class="fas fa-search fa-lg" style="color: #FA7D00;"></i></button>
+            </div>
+
+            <div>
+                <select id="orderBy" name="orderBy">
+                    <option value="">Ordenar por</option>
+                    <option value="alfabetica">Ordem Alfabética</option>
+                    <option value="insercao">Ordem de inserção</option>
+                    <option value="categoria">Agrupar mesma categoria</option>
+                </select>
+            </div>
+
+            <div id="bttn">   
+                <button id="list">Listar</button>
+                <button id="modalInserir">Cadastrar</button>
+                <button id="modalAlterar">Alterar</button>
+                <button id="modalDeletar">Deletar restrição</button>
+                <button id="modalDeletarTudo">Deletar tudo</button>
+            </div>
+        </div>
+        
+        <div id="mostrar">
+
+        </div>
+         
+         <div class="modal" id="myModalRestricoes">
+			<div class="model-content5" id="modalRestricoesAqui">
+				
+		     </div>
+        </div>
+        
+          <div class="modal" id="myModalInserir">
+			<div class="model-content7">
+				<h1 class="entrarCadastrar">Cadastrar Ingrediente</h1>
+				<div id="msgError"></div>
+				<div id="msgSuccess"></div>
+				
+				<form id="insertIngredient">
+					
+				<div id="grid">
+					<div id="divNome">
+	                <label class="labelBig" for="nome">Nome:</label> <br>
+	                <input type="text" id="nome" name="nome" required>
+	            </div>
+	        
+	            <div id="divImagem" >
+	                <label class="labelBig" for="imagem">Imagem:</label> <br>
+	                <input type="file" id="imagem" name="imagem" accept="image/*">
+	            </div>
+       
+	            <div id="divCategoria">
+	                <label class="labelBig" for="categoria">Categoria:</label> <br>
+	                <select name="categoria" id="categoria">
+						<option value="base">Selecione uma categoria</option>
+						<option value="Açucares">Açúcares</option>
+						<option value="Frutas">Frutas</option>
+						<option value="Grãos e Sereais">Grãos e Cereais</option>
+						<option value="Leites e Derivados">Leite e derivados</option>
+						<option value="Massas">Massas</option>
+						<option value="Óleos">Óleos e gorduras</option>
+						<option value="Proteínas">Proteinas</option>
+						<option value="Verduras">Verduras</option>
+						<option value="Outros">Outros</option>
+					</select>
+	            </div>
+	            
+				</div>
+	            
+	            <div id="infoNutricional">
+	                <label class="labelBig" for="infoNutricional">Informação Nutricional:</label> <br>
+	                <div>
+	                    <label for="calorie">Caloria:</label> <br>
+	                    <input type="text" id="calorie" name="infoNutricional[calorias]">
+	                </div>
+	        
+	                <div>
+	                    <label for="carboidratos">Carboidrato:</label> <br>
+	                    <input type="text" id="carboidratos" name="infoNutricional[carboidratos]">
+	                </div>
+	
+	                <div>
+	                    <label for="proteinas">Proteína:</label> <br>
+	                    <input type="text" id="proteinas" name="infoNutricional[proteinas]">
+	                </div>
+	
+	                <div>
+	                    <label for="gorduraTrans">Gordura Trans:</label> <br>
+	                    <input type="text" id="gorduraTrans" name="infoNutricional[gorduraTrans]">
+	                </div>
+	        
+	                <div>
+	                    <label for="gorduraSaturada">Gordura Saturada:</label> <br>
+	                    <input type="text" id="gorduraSaturada" name="infoNutricional[gorduraSaturada]">
+	                </div>
+	
+	                <div>
+	                    <label for="fibra">Fibra:</label> <br>
+	                    <input type="text" id="fibra" name="infoNutricional[fibra]">
+	                </div>
+	
+	                <div>
+	                    <label for="sodio">Sódio:</label> <br>
+	                    <input type="text" id="sodio" name="infoNutricional[sodio]">
+	                </div>
+	            </div>
+	            	<br>
+	            	
+				  <label class="labelBig" for="restrictions">Restrições:</label> <br>
+				  <div id="restrictions">
+					  <div>
+						<label for="edv">Estilo de vida</label> <br>
+					  	<div id="edv">
+					  	</div>
+					  </div>
+						  
+					  <div>
+						  <label for="cds">Condição de saúde</label> <br>
+						  <div id="cds">						  
+					  	  </div>
+					  </div>
+					  
+					  <div>
+						  <label for="dr">Demais Restrições</label> <br>
+						  <div id="dr">
+						  </div>						  
+					  </div>
+				  </div>
+				
+				  <div id="botoes" class="justify-center">
+			         <button type="submit" id="cadastrar">Cadastrar</button>
+			         <button id="fecharInserir">Fechar</button>
+		          </div>
+				</form>
+		     </div>
+        </div>
+        
+        <div class="modal" id="myModal2">
+			<div class="model-content2">
+				<h1 class="entrarCadastrar">Editar ingrediente</h1>
+				<div id="msgError1"></div>
+				
+				<form id="update">
+				<div class="label-float">
+		            <input type="text" id="alterarIngrediente" name="alterarIngrediente" placeholder=" " required />
+		            <label id="labelalterarIngrediente" for="alterarIngrediente">Qual ingrediente deseja alterar?</label>
+		         </div>
+		         
+		         <div class="justify-center">
+			         <button id="enviar">OK</button>
+			         <button id="fecharModal2">Fechar</button>
+		          </div>
+				</form>
+
+		     </div>
+        </div>
+        
+           <div class="modal" id="myModalEditar">
+			<div class="model-content7" id="modalEditarAqui">
+				
+		     </div>
+        </div>
+        
+        <div class="modal" id="myModal4">
+			<div class="model-content6">
+				<h1 class="entrarCadastrar">Deletar Ingrediente</h1>
+				<div id="msgError4"></div>
+				<div id="msgSuccess4"></div>
+				
+				<form id="delete">
+				<div class="label-float">
+		            <input type="text" id="apagarIngrediente" name="apagarIngrediente" placeholder=" " required />
+		            <label id="labelApagarIngrediente" for="apagarIngrediente">Qual ingrediente deseja deletar?</label>
+		         </div>
+		         
+		         <div class="label-float">
+		            <input type="text" id="validSuperuser" name="validSuperuser" placeholder=" " required />
+		            <label id="labelvalidSuperuser" for="validSuperuser">Informe um superuser válido</label>
+		         </div>
+		         
+		        <div class="label-float">
+		            <input type="password" id="confirmarSenha" name="confirmarSenha" placeholder=" " required />
+		            <label id="labelConfirmarsenha" for="confirmarSenha">Confirmar senha</label>
+		         </div>
+		         
+		         <div class="justify-center">
+			         <button id="deletarUser">Deletar</button>
+			         <button id="fecharModal4">Fechar</button>
+		          </div>
+				</form>
+
+		     </div>
+        </div>
+        
+          <div class="modal" id="myModal5">
+			<div class="model-content4">
+				<h1 class="entrarCadastrar">Deletar todos</h1>
+				<div id="msgError5"></div>
+				<div id="msgSuccess5"></div>
+				
+				<form id="deleteAll">
+				<div class="label-float">
+		            <input type="text" id="superuser" name="superuser" placeholder=" " required />
+		            <label id="labelApagarUser" for="superuser">Insira um superuser válido</label>
+		         </div>
+		         
+		        <div class="label-float">
+		            <input type="password" id="senhaSuperuser" name="senhaSuperuser" placeholder=" " required />
+		            <label id="labelConfirmarsenha" for="senhaSuperuser">Senha</label>
+		         </div>
+		         
+		         <div class="justify-center">
+			         <button id="prosseguir">Prosseguir</button>
+			         <button id="fecharModal5">Fechar</button>
+		          </div>
+				</form>
+
+		     </div>
+        </div>
+        
+    </section>
+	
+        <footer>
+            <ul class="foot-list">
+                <li>OUTRAS PÁGINAS</li>
+                <li><a href="sobrenos.html">Sobre Nós</a></li>
+                <li><a href="https://www.pucminas.br/destaques/Paginas/default.aspx">Portal PUC Minas</a></li>
+            </ul>
+
+              <img id="puc" src="images/logopuc.png" alt="Não foi possível carregar a imagem.">
+        </footer>
+        <script src="js/testes.js"></script>
+</body>
+</html>
